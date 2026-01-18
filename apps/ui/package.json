@@ -30,6 +30,7 @@
     "@angular/platform-browser": "^21.0.0",
     "@angular/router": "^21.0.0",
     "@smart-vacation-planner/shared-types": "workspace:*",
+    "@smart-vacation-planner/shared-ui": "workspace:*",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
