@@ -1,0 +1,148 @@
+@use 'variables' as *;
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background-color: #fff;
+    border-bottom: 1px solid #e5e7eb;
+
+    .header-left {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        .header-title {
+            font-size: $font-size-xl;
+            font-weight: $font-weight-semibold;
+            line-height: $line-height-tight;
+            letter-spacing: $letter-spacing-tight;
+            color: #1d293d;
+        }
+
+        .header-subtitle {
+            font-size: $font-size-sm;
+            font-weight: $font-weight-regular;
+            line-height: $line-height-normal;
+            color: #6b7280;
+        }
+    }
+
+    .header-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+}
+
+// ── Shared button base ────────────────────────────────
+.header-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #f9fafb;
+    color: #374151;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+        background: #f3f4f6;
+        border-color: #d1d5db;
+    }
+
+    &:active {
+        background: #e5e7eb;
+    }
+
+    .pi {
+        font-size: $font-size-md;
+    }
+}
+
+// ── Theme toggle ──────────────────────────────────────
+.theme-btn {
+    width: 40px;
+    height: 40px;
+}
+
+// ── Language switcher ─────────────────────────────────
+.lang-switcher {
+    position: relative;
+}
+
+.lang-btn {
+    gap: 6px;
+    height: 40px;
+    padding: 0 12px;
+
+    .lang-label {
+        font-family: $font-family-base;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
+        letter-spacing: $letter-spacing-wide;
+        line-height: 1;
+    }
+
+    .chevron {
+        font-size: $font-size-xs;
+        transition: transform 0.2s ease;
+
+        &.open {
+            transform: rotate(180deg);
+        }
+    }
+}
+
+.lang-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    min-width: 140px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    padding: 4px;
+    z-index: 100;
+    animation: dropdownFadeIn 0.15s ease;
+}
+
+.lang-option {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #374151;
+    font-family: $font-family-base;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-regular;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+
+    &:hover {
+        background: #f3f4f6;
+    }
+
+    &.active {
+        font-weight: $font-weight-medium;
+        color: #2563eb;
+        background: #eff6ff;
+    }
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
