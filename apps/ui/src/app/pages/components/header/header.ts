@@ -3,6 +3,7 @@ import { UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { ThemeService } from '../../../core/services/theme.service';
 import { TranslationService } from '../../../core/services/translation.service';
+import { TabsModule } from 'primeng/tabs';
 
 interface Language {
   code: string;
@@ -11,7 +12,7 @@ interface Language {
 
 @Component({
   selector: 'app-header',
-  imports: [TranslateModule, UpperCasePipe],
+  imports: [TranslateModule, UpperCasePipe, TabsModule],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })

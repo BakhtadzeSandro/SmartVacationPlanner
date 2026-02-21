@@ -1,34 +1,43 @@
 <div class="header-container">
-    <div class="header-left">
-        <div class="header-title">{{ 'Header.Title' | translate }}</div>
-        <div class="header-subtitle">{{ 'Header.Subtitle' | translate }}</div>
-    </div>
-    <div class="header-right">
-        <div class="lang-switcher" (click)="toggleLangDropdown()">
-            <button class="header-btn lang-btn" type="button" [attr.aria-expanded]="langDropdownOpen()">
-                <i class="pi pi-globe"></i>
-                <span class="lang-label">{{ currentLang() | uppercase }}</span>
-                <i class="pi pi-chevron-down chevron" [class.open]="langDropdownOpen()"></i>
-            </button>
-            @if (langDropdownOpen()) {
-                <div class="lang-dropdown" role="listbox">
-                    @for (lang of languages; track lang.code) {
-                        <button
-                            class="lang-option"
-                            role="option"
-                            type="button"
-                            [class.active]="lang.code === currentLang()"
-                            [attr.aria-selected]="lang.code === currentLang()"
-                            (click)="switchLanguage(lang.code); $event.stopPropagation()">
-                            {{ lang.label }}
-                        </button>
-                    }
-                </div>
-            }
+    <div class="header-top">
+        <div class="header-left">
+            <div class="header-title">{{ 'Header.Title' | translate }}</div>
+            <div class="header-subtitle">{{ 'Header.Subtitle' | translate }}</div>
         </div>
+        <div class="header-right">
+            <div class="lang-switcher" (click)="toggleLangDropdown()">
+                <button class="header-btn lang-btn" type="button" [attr.aria-expanded]="langDropdownOpen()">
+                    <i class="pi pi-globe"></i>
+                    <span class="lang-label">{{ currentLang() | uppercase }}</span>
+                    <i class="pi pi-chevron-down chevron" [class.open]="langDropdownOpen()"></i>
+                </button>
+                @if (langDropdownOpen()) {
+                    <div class="lang-dropdown" role="listbox">
+                        @for (lang of languages; track lang.code) {
+                            <button
+                                class="lang-option"
+                                role="option"
+                                type="button"
+                                [class.active]="lang.code === currentLang()"
+                                [attr.aria-selected]="lang.code === currentLang()"
+                                (click)="switchLanguage(lang.code); $event.stopPropagation()">
+                                {{ lang.label }}
+                            </button>
+                        }
+                    </div>
+                }
+            </div>
 
-        <button class="header-btn theme-btn" type="button" (click)="toggleTheme()" aria-label="Toggle dark mode">
-            <i class="pi" [class.pi-moon]="!isDark()" [class.pi-sun]="isDark()"></i>
-        </button>
+            <button class="header-btn theme-btn" type="button" (click)="toggleTheme()" aria-label="Toggle dark mode">
+                <i class="pi" [class.pi-moon]="!isDark()" [class.pi-sun]="isDark()"></i>
+            </button>
+        </div>
+    </div>
+    <div class="header-tabs">
+        <p-tabs>
+            <p-tablist>
+                <p-tab>{{ 'Header.SoloPlanner' | translate }}</p-tab>
+            </p-tablist>
+        </p-tabs>
     </div>
 </div>
