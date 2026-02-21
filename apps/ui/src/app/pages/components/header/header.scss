@@ -78,10 +78,6 @@
 }
 
 // ── Language switcher ─────────────────────────────────
-.lang-switcher {
-    position: relative;
-}
-
 .lang-btn {
     gap: 6px;
     height: 40px;
@@ -97,26 +93,13 @@
 
     .chevron {
         font-size: $font-size-xs;
-        transition: transform 0.2s ease;
-
-        &.open {
-            transform: rotate(180deg);
-        }
     }
 }
 
-.lang-dropdown {
-    position: absolute;
-    top: calc(100% + 6px);
-    right: 0;
-    min-width: 140px;
-    background: #fff;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-    padding: 4px;
-    z-index: 100;
-    animation: dropdownFadeIn 0.15s ease;
+.lang-options {
+    display: flex;
+    flex-direction: column;
+    min-width: 120px;
 }
 
 .lang-option {
@@ -126,7 +109,6 @@
     border: none;
     border-radius: 6px;
     background: transparent;
-    color: #374151;
     font-family: $font-family-base;
     font-size: $font-size-sm;
     font-weight: $font-weight-regular;
@@ -135,23 +117,12 @@
     transition: background-color 0.1s ease;
 
     &:hover {
-        background: #f3f4f6;
+        background: var(--p-surface-100);
     }
 
     &.active {
         font-weight: $font-weight-medium;
-        color: #2563eb;
-        background: #eff6ff;
-    }
-}
-
-@keyframes dropdownFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-4px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+        color: var(--p-primary-color);
+        background: var(--p-primary-50);
     }
 }

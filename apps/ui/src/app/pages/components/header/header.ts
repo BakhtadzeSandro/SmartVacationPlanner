@@ -1,9 +1,10 @@
-import { Component, computed, ElementRef, HostListener, inject, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
+import { Popover } from 'primeng/popover';
+import { TabsModule } from 'primeng/tabs';
 import { ThemeService } from '../../../core/services/theme.service';
 import { TranslationService } from '../../../core/services/translation.service';
-import { TabsModule } from 'primeng/tabs';
 
 interface Language {
   code: string;
@@ -12,41 +13,27 @@ interface Language {
 
 @Component({
   selector: 'app-header',
-  imports: [TranslateModule, UpperCasePipe, TabsModule],
+  imports: [TranslateModule, UpperCasePipe, Popover, TabsModule],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
 export class Header {
-  private readonly elementRef = inject(ElementRef);
   private readonly themeService = inject(ThemeService);
   private readonly translationService = inject(TranslationService);
 
   readonly isDark = computed(() => this.themeService.theme() === 'dark');
   readonly currentLang = this.translationService.currentLang;
-  readonly langDropdownOpen = signal(false);
 
   readonly languages: Language[] = [
     { code: 'en', label: 'English' },
     { code: 'ka', label: 'Georgian' },
   ];
 
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    if (!this.elementRef.nativeElement.contains(event.target)) {
-      this.langDropdownOpen.set(false);
-    }
-  }
-
   toggleTheme(): void {
     this.themeService.toggle();
   }
 
-  toggleLangDropdown(): void {
-    this.langDropdownOpen.update(open => !open);
-  }
-
   switchLanguage(lang: string): void {
     this.translationService.switchLanguage(lang);
-    this.langDropdownOpen.set(false);
   }
 }
