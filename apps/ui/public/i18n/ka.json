@@ -5,7 +5,8 @@
         "SoloPlanner": "სოლო დამგეგმავი",
         "GroupPlanner": "ჯგუფის დამგეგმავი",
         "TeamPlanner": "გუნდის დამგეგმავი",
-        "MyGroups": "ჩემი ჯგუფები"
+        "MyGroups": "ჩემი ჯგუფები",
+        "ComingSoon": "მალე"
     },
     "SoloPlanner": {
         "Configuration": "კონფიგურაცია",

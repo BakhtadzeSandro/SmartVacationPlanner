@@ -45,6 +45,17 @@
     padding: 0px 24px;
 }
 
+.coming-soon-badge {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    color: #f59e0b;
+    background-color: #fef3c7;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
 // ── Shared button base ────────────────────────────────
 .header-btn {
     display: inline-flex;

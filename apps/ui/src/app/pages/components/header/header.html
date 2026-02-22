@@ -35,6 +35,9 @@
                 @for (tab of tabs; track tab.value) {
                     <p-tab [value]="tab.value" (click)="navigateToTab(tab.navigateTo)" [disabled]="tab.disabled">
                         {{ tab.label | translate }}
+                        @if (tab.disabled) {
+                            <span class="coming-soon-badge">{{ 'Header.ComingSoon' | translate }}</span>
+                        }
                     </p-tab>
                 }
             </p-tablist>
