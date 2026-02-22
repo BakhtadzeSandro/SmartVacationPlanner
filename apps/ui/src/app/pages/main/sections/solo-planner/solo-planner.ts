@@ -9,4 +9,4 @@ import { CalendarOverview } from '../../../components/calendar-overview/calendar
   templateUrl: './solo-planner.html',
   styleUrl: './solo-planner.scss',
 })
-export class SoloPlanner { }
+export class SoloPlanner {}

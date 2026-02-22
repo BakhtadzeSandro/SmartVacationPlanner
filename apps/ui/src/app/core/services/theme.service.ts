@@ -19,7 +19,7 @@ export class ThemeService {
   }
 
   toggle(): void {
-    this.theme.update(current => current === 'dark' ? 'light' : 'dark');
+    this.theme.update((current) => (current === 'dark' ? 'light' : 'dark'));
   }
 
   private getInitialTheme(): Theme {

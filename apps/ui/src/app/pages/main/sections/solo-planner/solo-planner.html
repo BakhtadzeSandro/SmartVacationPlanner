@@ -1,13 +1,16 @@
 <div class="solo-planner-container">
-    <div class="sidebar-column">
-        <aside class="sidebar">
-            <app-configuration></app-configuration>
-        </aside>
-        <div class="tip-container">
-            <p><strong>{{ 'SoloPlanner.Note' | translate }}:</strong> {{ 'SoloPlanner.NoteText' | translate }}</p>
-        </div>
+  <div class="sidebar-column">
+    <aside class="sidebar">
+      <app-configuration></app-configuration>
+    </aside>
+    <div class="tip-container">
+      <p>
+        <strong>{{ 'SoloPlanner.Note' | translate }}:</strong>
+        {{ 'SoloPlanner.NoteText' | translate }}
+      </p>
     </div>
-    <main class="content">
-        <app-calendar-overview></app-calendar-overview>
-    </main>
+  </div>
+  <main class="content">
+    <app-calendar-overview></app-calendar-overview>
+  </main>
 </div>

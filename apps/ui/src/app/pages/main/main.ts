@@ -8,6 +8,4 @@ import { Header } from '../components/header/header';
   templateUrl: './main.html',
   styleUrl: './main.scss',
 })
-export class Main {
-
-}
+export class Main {}

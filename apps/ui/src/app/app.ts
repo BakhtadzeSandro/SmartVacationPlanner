@@ -1,6 +1,5 @@
 import { Component, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { Message } from '@smart-vacation-planner/shared-types';
 
 @Component({
   selector: 'app-root',

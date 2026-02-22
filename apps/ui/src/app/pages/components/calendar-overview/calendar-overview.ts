@@ -7,4 +7,4 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './calendar-overview.scss',
   imports: [TranslateModule],
 })
-export class CalendarOverview { }
+export class CalendarOverview {}

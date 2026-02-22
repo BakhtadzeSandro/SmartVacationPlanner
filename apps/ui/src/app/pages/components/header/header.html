@@ -1,46 +1,56 @@
 <div class="header-container">
-    <div class="header-top">
-        <div class="header-left">
-            <div class="header-title">{{ 'Header.Title' | translate }}</div>
-            <div class="header-subtitle">{{ 'Header.Subtitle' | translate }}</div>
-        </div>
-        <div class="header-right">
-            <button class="header-btn lang-btn" type="button" (click)="langPopover.toggle($event)">
-                <i class="pi pi-globe"></i>
-                <span class="lang-label">{{ currentLang() | uppercase }}</span>
-                <i class="pi pi-chevron-down chevron"></i>
+  <div class="header-top">
+    <div class="header-left">
+      <div class="header-title">{{ 'Header.Title' | translate }}</div>
+      <div class="header-subtitle">{{ 'Header.Subtitle' | translate }}</div>
+    </div>
+    <div class="header-right">
+      <button class="header-btn lang-btn" type="button" (click)="langPopover.toggle($event)">
+        <i class="pi pi-globe"></i>
+        <span class="lang-label">{{ currentLang() | uppercase }}</span>
+        <i class="pi pi-chevron-down chevron"></i>
+      </button>
+      <p-popover #langPopover>
+        <div class="lang-options">
+          @for (lang of languages; track lang.code) {
+            <button
+              class="lang-option"
+              type="button"
+              [class.active]="lang.code === currentLang()"
+              (click)="switchLanguage(lang.code); langPopover.hide()"
+            >
+              {{ lang.label }}
             </button>
-            <p-popover #langPopover>
-                <div class="lang-options">
-                    @for (lang of languages; track lang.code) {
-                        <button
-                            class="lang-option"
-                            type="button"
-                            [class.active]="lang.code === currentLang()"
-                            (click)="switchLanguage(lang.code); langPopover.hide()">
-                            {{ lang.label }}
-                        </button>
-                    }
-                </div>
-            </p-popover>
+          }
+        </div>
+      </p-popover>
 
-            <button class="header-btn theme-btn" type="button" (click)="toggleTheme()" aria-label="Toggle dark mode">
-                <i class="pi" [class.pi-moon]="!isDark()" [class.pi-sun]="isDark()"></i>
-            </button>
-        </div>
+      <button
+        class="header-btn theme-btn"
+        type="button"
+        (click)="toggleTheme()"
+        aria-label="Toggle dark mode"
+      >
+        <i class="pi" [class.pi-moon]="!isDark()" [class.pi-sun]="isDark()"></i>
+      </button>
     </div>
-    <div class="header-tabs">
-        <p-tabs value="solo-planner">
-            <p-tablist>
-                @for (tab of tabs; track tab.value) {
-                    <p-tab [value]="tab.value" (click)="navigateToTab(tab.navigateTo)" [disabled]="tab.disabled">
-                        {{ tab.label | translate }}
-                        @if (tab.disabled) {
-                            <span class="coming-soon-badge">{{ 'Header.ComingSoon' | translate }}</span>
-                        }
-                    </p-tab>
-                }
-            </p-tablist>
-        </p-tabs>
-    </div>
+  </div>
+  <div class="header-tabs">
+    <p-tabs value="solo-planner">
+      <p-tablist>
+        @for (tab of tabs; track tab.value) {
+          <p-tab
+            [value]="tab.value"
+            (click)="navigateToTab(tab.navigateTo)"
+            [disabled]="tab.disabled"
+          >
+            {{ tab.label | translate }}
+            @if (tab.disabled) {
+              <span class="coming-soon-badge">{{ 'Header.ComingSoon' | translate }}</span>
+            }
+          </p-tab>
+        }
+      </p-tablist>
+    </p-tabs>
+  </div>
 </div>

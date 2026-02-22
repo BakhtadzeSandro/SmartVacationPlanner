@@ -31,12 +31,22 @@ export class Header {
   ];
 
   readonly tabs = [
-    { value: 'solo-planner', label: 'Header.SoloPlanner', navigateTo: 'solo-planner', disabled: false },
-    { value: 'group-planner', label: 'Header.GroupPlanner', navigateTo: 'group-planner', disabled: true },
+    {
+      value: 'solo-planner',
+      label: 'Header.SoloPlanner',
+      navigateTo: 'solo-planner',
+      disabled: false,
+    },
+    {
+      value: 'group-planner',
+      label: 'Header.GroupPlanner',
+      navigateTo: 'group-planner',
+      disabled: true,
+    },
     { value: 'my-groups', label: 'Header.MyGroups', navigateTo: 'my-groups', disabled: true },
   ];
 
-  constructor(private readonly router: Router) { }
+  constructor(private readonly router: Router) {}
 
   navigateToTab(navigateTo: string): void {
     this.router.navigate([navigateTo]);

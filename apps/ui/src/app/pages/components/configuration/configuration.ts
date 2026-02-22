@@ -21,15 +21,13 @@ export class Configuration {
   private readonly translate = inject(TranslateService);
 
   readonly configForm = this.fb.group({
-    country: ['georgia'],
+    country: ['georgia', { disabled: true }],
     year: ['2026'],
     ptoDays: [15],
     periodFilter: ['all-year'],
   });
 
-  readonly countries: SelectOption[] = [
-    { label: 'Georgia', value: 'georgia' },
-  ];
+  readonly countries: SelectOption[] = [{ label: 'Georgia', value: 'georgia' }];
 
   readonly years: SelectOption[] = [
     { label: '2026', value: '2026' },
@@ -39,9 +37,23 @@ export class Configuration {
   periodFilters: SelectOption[] = [];
 
   private readonly periodFilterKeys = [
-    'all-year', 'spring', 'summer', 'fall', 'winter',
-    'january', 'february', 'march', 'april', 'may', 'june',
-    'july', 'august', 'september', 'october', 'november', 'december',
+    'all-year',
+    'spring',
+    'summer',
+    'fall',
+    'winter',
+    'january',
+    'february',
+    'march',
+    'april',
+    'may',
+    'june',
+    'july',
+    'august',
+    'september',
+    'october',
+    'november',
+    'december',
   ];
 
   constructor() {
@@ -50,15 +62,14 @@ export class Configuration {
   }
 
   private loadPeriodFilters(): void {
-    const keys = this.periodFilterKeys.map(k => `SoloPlanner.Period.${k}`);
-    this.translate.get(keys).subscribe(translations => {
-      this.periodFilters = this.periodFilterKeys.map(k => ({
+    const keys = this.periodFilterKeys.map((k) => `SoloPlanner.Period.${k}`);
+    this.translate.get(keys).subscribe((translations) => {
+      this.periodFilters = this.periodFilterKeys.map((k) => ({
         label: translations[`SoloPlanner.Period.${k}`],
         value: k,
       }));
     });
   }
 
-  onSubmit(): void {
-  }
+  onSubmit(): void {}
 }
