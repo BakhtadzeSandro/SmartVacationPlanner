@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Select } from 'primeng/select';
 import { InputNumber } from 'primeng/inputnumber';
 import { ButtonModule } from 'primeng/button';
@@ -18,6 +18,7 @@ interface SelectOption {
 })
 export class Configuration {
   private readonly fb = inject(FormBuilder);
+  private readonly translate = inject(TranslateService);
 
   readonly configForm = this.fb.group({
     country: ['georgia'],
@@ -35,25 +36,28 @@ export class Configuration {
     { label: '2027', value: '2027' },
   ];
 
-  readonly periodFilters: SelectOption[] = [
-    { label: 'All Year', value: 'all-year' },
-    { label: 'Spring (Mar-May)', value: 'spring' },
-    { label: 'Summer (Jun-Aug)', value: 'summer' },
-    { label: 'Fall (Sep-Nov)', value: 'fall' },
-    { label: 'Winter (Dec-Feb)', value: 'winter' },
-    { label: 'January', value: 'january' },
-    { label: 'February', value: 'february' },
-    { label: 'March', value: 'march' },
-    { label: 'April', value: 'april' },
-    { label: 'May', value: 'may' },
-    { label: 'June', value: 'june' },
-    { label: 'July', value: 'july' },
-    { label: 'August', value: 'august' },
-    { label: 'September', value: 'september' },
-    { label: 'October', value: 'october' },
-    { label: 'November', value: 'november' },
-    { label: 'December', value: 'december' },
+  periodFilters: SelectOption[] = [];
+
+  private readonly periodFilterKeys = [
+    'all-year', 'spring', 'summer', 'fall', 'winter',
+    'january', 'february', 'march', 'april', 'may', 'june',
+    'july', 'august', 'september', 'october', 'november', 'december',
   ];
+
+  constructor() {
+    this.loadPeriodFilters();
+    this.translate.onLangChange.subscribe(() => this.loadPeriodFilters());
+  }
+
+  private loadPeriodFilters(): void {
+    const keys = this.periodFilterKeys.map(k => `SoloPlanner.Period.${k}`);
+    this.translate.get(keys).subscribe(translations => {
+      this.periodFilters = this.periodFilterKeys.map(k => ({
+        label: translations[`SoloPlanner.Period.${k}`],
+        value: k,
+      }));
+    });
+  }
 
   onSubmit(): void {
   }

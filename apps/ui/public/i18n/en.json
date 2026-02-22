@@ -17,6 +17,25 @@
     "Note": "Note",
     "NoteText": "We analyze public holidays and weekends to maximize your time off while minimizing PTO usage.",
     "CalendarOverview": "Calendar Overview",
-    "CalendarOverviewSubtitle": "Public holidays and weekends highlighted"
+    "CalendarOverviewSubtitle": "Public holidays and weekends highlighted",
+    "Period": {
+      "all-year": "All Year",
+      "spring": "Spring (Mar-May)",
+      "summer": "Summer (Jun-Aug)",
+      "fall": "Fall (Sep-Nov)",
+      "winter": "Winter (Dec-Feb)",
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    }
   }
 }
