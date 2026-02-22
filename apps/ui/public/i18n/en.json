@@ -2,6 +2,13 @@
   "Header": {
     "Title": "Smart Vacation Planner",
     "Subtitle": "Plan your time off with public holiday awareness",
-    "SoloPlanner": "Solo Planner"
+    "SoloPlanner": "Solo Planner",
+    "GroupPlanner": "Group Planner",
+    "MyGroups": "My Groups"
+  },
+  "SoloPlanner": {
+    "Configuration": "Configuration",
+    "CalendarOverview": "Calendar Overview",
+    "CalendarOverviewSubtitle": "Public holidays and weekends highlighted"
   }
 }

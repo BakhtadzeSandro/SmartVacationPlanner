@@ -8,6 +8,17 @@ export const routes: Routes = [
     },
     {
         path: 'main',
-        loadComponent: () => import('./pages/main/main').then(m => m.Main)
+        loadComponent: () => import('./pages/main/main').then(m => m.Main),
+        children: [
+            {
+                path: '',
+                redirectTo: 'solo-planner',
+                pathMatch: 'full'
+            },
+            {
+                path: 'solo-planner',
+                loadComponent: () => import('./pages/solo-planner/solo-planner').then(m => m.SoloPlanner)
+            }
+        ]
     }
 ];

@@ -1,0 +1,22 @@
+@use 'variables' as *;
+
+.calendar-overview-container {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+}
+
+.calendar-overview-header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.calendar-overview-title {
+    color: #1d293d;
+}
+
+.calendar-overview-subtitle {
+    font-size: $font-size-sm;
+    color: #6b7280;
+}

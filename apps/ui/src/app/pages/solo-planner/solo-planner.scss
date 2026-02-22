@@ -1,0 +1,21 @@
+.solo-planner-container {
+    display: flex;
+    gap: 24px;
+    padding: 24px;
+}
+
+.sidebar {
+    flex-shrink: 0;
+    width: 320px;
+    background-color: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+.content {
+    flex: 1;
+    min-width: 0;
+    background-color: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
