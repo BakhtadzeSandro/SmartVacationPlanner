@@ -1,3 +1,60 @@
 <div class="configuration-container">
     <h4 class="configuration-title">{{ 'SoloPlanner.Configuration' | translate }}</h4>
+
+    <div class="configuration-form">
+        <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+            <div class="form-field">
+                <label class="form-label">{{ 'SoloPlanner.Country' | translate }}</label>
+                <p-select
+                    formControlName="country"
+                    [options]="countries"
+                    [disabled]="true"
+                    optionLabel="label"
+                    optionValue="value"
+                    class="w-full" />
+                <small class="form-hint">{{ 'SoloPlanner.CountryHint' | translate }}</small>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">{{ 'SoloPlanner.Year' | translate }}</label>
+                <p-select
+                    formControlName="year"
+                    [options]="years"
+                    optionLabel="label"
+                    optionValue="value"
+                    class="w-full" />
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">{{ 'SoloPlanner.AvailablePtoDays' | translate }}</label>
+                <p-inputnumber
+                    formControlName="ptoDays"
+                    [min]="1"
+                    [max]="24"
+                    [showButtons]="true"
+                    class="input-number" />
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">{{ 'SoloPlanner.PeriodFilter' | translate }}</label>
+                <p-select
+                    formControlName="periodFilter"
+                    [options]="periodFilters"
+                    optionLabel="label"
+                    optionValue="value"
+                    class="w-full" />
+            </div>
+
+            <p-button
+                type="submit"
+                [label]="'SoloPlanner.FindBestVacation' | translate"
+                icon="pi pi-search"
+                styleClass="w-full"
+                severity="primary" />
+        </form>
+    </div>
+
+    <div class="configuration-tip">
+        <p><strong>{{ 'SoloPlanner.Tip' | translate }}:</strong> {{ 'SoloPlanner.TipText' | translate }}</p>
+    </div>
 </div>

@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 .configuration-container {
     display: flex;
     flex-direction: column;
@@ -6,4 +8,53 @@
 
 .configuration-title {
     color: #1d293d;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 24px;
+}
+
+.configuration-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.form-label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: #1d293d;
+}
+
+.form-hint {
+    font-size: $font-size-xs;
+    color: #3b82f6;
+}
+
+.configuration-tip {
+    margin-top: 24px;
+    padding: 16px;
+    background-color: #eff6ff;
+    border-left: 3px solid #3b82f6;
+    border-radius: 8px;
+
+    p {
+        font-size: $font-size-sm;
+        line-height: $line-height-normal;
+        color: #374151;
+    }
+
+    strong {
+        color: #3b82f6;
+    }
+}
+
+.input-number ::ng-deep .p-inputnumber-input {
+    width: 100%;
 }

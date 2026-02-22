@@ -17,7 +17,7 @@ export const routes: Routes = [
             },
             {
                 path: 'solo-planner',
-                loadComponent: () => import('./pages/solo-planner/solo-planner').then(m => m.SoloPlanner)
+                loadComponent: () => import('./pages/main/sections/solo-planner/solo-planner').then(m => m.SoloPlanner)
             }
         ]
     }

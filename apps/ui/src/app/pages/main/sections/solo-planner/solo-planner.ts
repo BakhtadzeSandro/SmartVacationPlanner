@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Configuration } from '../components/configuration/configuration';
-import { CalendarOverview } from '../components/calendar-overview/calendar-overview';
+import { Configuration } from '../../../components/configuration/configuration';
+import { CalendarOverview } from '../../../components/calendar-overview/calendar-overview';
 
 @Component({
   selector: 'app-solo-planner',
@@ -8,4 +8,4 @@ import { CalendarOverview } from '../components/calendar-overview/calendar-overv
   templateUrl: './solo-planner.html',
   styleUrl: './solo-planner.scss',
 })
-export class SoloPlanner {}
+export class SoloPlanner { }

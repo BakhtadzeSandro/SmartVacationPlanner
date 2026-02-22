@@ -8,6 +8,14 @@
   },
   "SoloPlanner": {
     "Configuration": "Configuration",
+    "Country": "Country",
+    "CountryHint": "Multi-country support coming soon",
+    "Year": "Year",
+    "AvailablePtoDays": "Available PTO Days",
+    "PeriodFilter": "Period Filter",
+    "FindBestVacation": "Find Best Vacation Options",
+    "Tip": "Tip",
+    "TipText": "We analyze public holidays and weekends to maximize your time off while minimizing PTO usage.",
     "CalendarOverview": "Calendar Overview",
     "CalendarOverviewSubtitle": "Public holidays and weekends highlighted"
   }
