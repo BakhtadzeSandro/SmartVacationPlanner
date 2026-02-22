@@ -1,19 +1,45 @@
+@use 'variables' as *;
+
 .solo-planner-container {
     display: flex;
+    align-items: flex-start;
     gap: 24px;
     padding: 24px;
 }
 
+.sidebar-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 30%;
+}
+
 .sidebar {
-    flex-shrink: 0;
-    width: 320px;
     background-color: #fff;
     border: 1px solid #e5e7eb;
     border-radius: 12px;
 }
 
+.tip-container {
+    padding: 16px;
+    background-color: #eff6ff;
+    border: 1px solid #bedbff;
+    border-left: 3px solid #3b82f6;
+    border-radius: 8px;
+
+    p {
+        font-size: $font-size-sm;
+        line-height: $line-height-normal;
+        color: #193cb8;
+    }
+
+    strong {
+        color: #3b82f6;
+    }
+}
+
 .content {
-    flex: 1;
+    width: 70%;
     min-width: 0;
     background-color: #fff;
     border: 1px solid #e5e7eb;

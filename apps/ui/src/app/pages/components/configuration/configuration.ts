@@ -21,7 +21,7 @@ export class Configuration {
 
   readonly configForm = this.fb.group({
     country: ['georgia'],
-    year: [2026],
+    year: ['2026'],
     ptoDays: [15],
     periodFilter: ['all-year'],
   });
