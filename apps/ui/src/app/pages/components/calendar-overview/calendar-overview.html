@@ -5,4 +5,45 @@
       {{ 'SoloPlanner.CalendarOverviewSubtitle' | translate }}
     </p>
   </div>
+
+  <hr class="calendar-overview-divider" />
+
+  <div class="calendar-overview-legend">
+    <div class="legend-item">
+      <span class="legend-dot legend-dot--holiday"></span>
+      <span class="legend-label">Public Holiday</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-dot legend-dot--weekend"></span>
+      <span class="legend-label">Weekend</span>
+    </div>
+  </div>
+
+  <div class="calendar-overview-content">
+    @for (month of calendarMonths(); track month.month) {
+      <div class="calendar-month-card">
+        <div class="calendar-month-header">{{ month.name }}</div>
+        <div class="calendar-day-grid">
+          @for (header of dayHeaders; track $index) {
+            <div class="calendar-day-header">{{ header }}</div>
+          }
+          @for (week of month.weeks; track $index) {
+            @for (day of week; track $index) {
+              <div
+                class="calendar-day-cell"
+                [class.other-month]="!day.isCurrentMonth"
+                [class.weekend]="day.isCurrentMonth && getDayHighlightType(day) === 'weekend'"
+                [class.public-holiday]="day.isCurrentMonth && getDayHighlightType(day) === 'public-holiday'"
+                [class.pto]="day.isCurrentMonth && getDayHighlightType(day) === 'pto'"
+              >
+                @if (day.isCurrentMonth) {
+                  {{ day.day }}
+                }
+              </div>
+            }
+          }
+        </div>
+      </div>
+    }
+  </div>
 </div>

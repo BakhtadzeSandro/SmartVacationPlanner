@@ -20,3 +20,131 @@
   font-size: $font-size-sm;
   color: #6b7280;
 }
+
+.calendar-overview-divider {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 16px 0;
+}
+
+.calendar-overview-legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+
+  &--holiday {
+    background-color: #10b981;
+  }
+
+  &--weekend {
+    background-color: #d1d5db;
+  }
+}
+
+.legend-label {
+  font-size: $font-size-sm;
+  color: #374151;
+}
+
+.calendar-overview-content {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+
+  @media (max-width: 1400px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 576px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.calendar-month-card {
+  min-width: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 12px;
+  background-color: #fdfbfb;
+}
+
+.calendar-month-header {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  color: #1d293d;
+  text-align: center;
+  padding-bottom: 8px;
+}
+
+.calendar-day-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  row-gap: 2px;
+}
+
+.calendar-day-header {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: #6b7280;
+  text-align: center;
+  padding: 4px 0;
+}
+
+.calendar-day-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-xs;
+  color: #374151;
+  padding: 4px 0;
+
+  &.other-month {
+    visibility: hidden;
+  }
+
+  &.weekend {
+    background-color: #f3f4f6;
+    color: #9ca3af;
+    border-radius: 12px;
+  }
+
+  &.public-holiday {
+    background-color: #10b981;
+    color: #fff;
+    border-radius: 12px;
+    font-weight: $font-weight-semibold;
+    width: 28px;
+    height: 28px;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  &.pto {
+    background-color: #dbeafe;
+    color: #2563eb;
+    border-radius: 12px;
+    font-weight: $font-weight-semibold;
+    width: 28px;
+    height: 28px;
+    margin: 0 auto;
+    padding: 0;
+  }
+}

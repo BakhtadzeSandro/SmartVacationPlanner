@@ -5,6 +5,10 @@
   align-items: flex-start;
   gap: 24px;
   padding: 24px;
+
+  @media (max-width: 992px) {
+    flex-direction: column;
+  }
 }
 
 .sidebar-column {
@@ -12,6 +16,10 @@
   flex-direction: column;
   gap: 16px;
   width: 30%;
+
+  @media (max-width: 992px) {
+    width: 100%;
+  }
 }
 
 .sidebar {
@@ -44,4 +52,8 @@
   background-color: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
+
+  @media (max-width: 992px) {
+    width: 100%;
+  }
 }
