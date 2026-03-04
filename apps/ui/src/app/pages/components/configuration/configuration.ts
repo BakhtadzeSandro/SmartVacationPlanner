@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Select } from 'primeng/select';
@@ -26,6 +26,8 @@ export class Configuration {
     ptoDays: [10],
     periodFilter: ['all-year'],
   });
+
+  readonly yearChange = output<number>();
 
   readonly countries: SelectOption[] = [{ label: 'Georgia', value: 'georgia' }];
 
@@ -59,6 +61,12 @@ export class Configuration {
   constructor() {
     this.loadPeriodFilters();
     this.translate.onLangChange.subscribe(() => this.loadPeriodFilters());
+
+    this.configForm.controls.year.valueChanges.subscribe((value) => {
+      if (value) {
+        this.yearChange.emit(Number(value));
+      }
+    });
   }
 
   private loadPeriodFilters(): void {

@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 export type DayHighlightType = 'weekend' | 'public-holiday' | 'pto';
@@ -24,7 +24,7 @@ export interface CalendarMonth {
   imports: [TranslateModule],
 })
 export class CalendarOverview {
-  readonly selectedYear = signal(new Date().getFullYear());
+  readonly selectedYear = input(new Date().getFullYear());
   readonly dayHeaderKeys = [
     'SoloPlanner.DayHeader.Mon',
     'SoloPlanner.DayHeader.Tue',

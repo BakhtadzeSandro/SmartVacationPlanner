@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { Configuration } from '../../../components/configuration/configuration';
 import { CalendarOverview } from '../../../components/calendar-overview/calendar-overview';
@@ -9,4 +9,10 @@ import { CalendarOverview } from '../../../components/calendar-overview/calendar
   templateUrl: './solo-planner.html',
   styleUrl: './solo-planner.scss',
 })
-export class SoloPlanner {}
+export class SoloPlanner {
+  readonly selectedYear = signal(new Date().getFullYear());
+
+  onYearChange(year: number): void {
+    this.selectedYear.set(year);
+  }
+}
