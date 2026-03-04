@@ -7,9 +7,9 @@
 }
 
 .configuration-title {
-  color: #1d293d;
+  color: var(--text-primary);
   padding-bottom: 16px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-primary);
   margin-bottom: 24px;
 }
 
@@ -29,12 +29,12 @@
 .form-label {
   font-size: $font-size-sm;
   font-weight: $font-weight-medium;
-  color: #1d293d;
+  color: var(--text-primary);
 }
 
 .form-hint {
   font-size: $font-size-xs;
-  color: #3b82f6;
+  color: var(--text-hint);
 }
 
 .input-number ::ng-deep .p-inputnumber-input {

@@ -23,34 +23,34 @@
 }
 
 .sidebar {
-  background-color: #fff;
-  border: 1px solid #e5e7eb;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-primary);
   border-radius: 12px;
 }
 
 .tip-container {
   padding: 16px;
-  background-color: #eff6ff;
-  border: 1px solid #bedbff;
-  border-left: 3px solid #3b82f6;
+  background-color: var(--bg-tip);
+  border: 1px solid var(--border-tip);
+  border-left: 3px solid var(--border-tip-left);
   border-radius: 8px;
 
   p {
     font-size: $font-size-sm;
     line-height: $line-height-normal;
-    color: #193cb8;
+    color: var(--text-tip);
   }
 
   strong {
-    color: #3b82f6;
+    color: var(--text-tip-strong);
   }
 }
 
 .content {
   width: 70%;
   min-width: 0;
-  background-color: #fff;
-  border: 1px solid #e5e7eb;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-primary);
   border-radius: 12px;
 
   @media (max-width: 992px) {
