@@ -11,7 +11,7 @@ export interface CalendarDay {
 }
 
 export interface CalendarMonth {
-  name: string;
+  nameKey: string;
   year: number;
   month: number;
   weeks: CalendarDay[][];
@@ -25,7 +25,15 @@ export interface CalendarMonth {
 })
 export class CalendarOverview {
   readonly selectedYear = signal(new Date().getFullYear());
-  readonly dayHeaders = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+  readonly dayHeaderKeys = [
+    'SoloPlanner.DayHeader.Mon',
+    'SoloPlanner.DayHeader.Tue',
+    'SoloPlanner.DayHeader.Wed',
+    'SoloPlanner.DayHeader.Thu',
+    'SoloPlanner.DayHeader.Fri',
+    'SoloPlanner.DayHeader.Sat',
+    'SoloPlanner.DayHeader.Sun',
+  ];
 
   readonly calendarMonths = computed(() => {
     const year = this.selectedYear();
@@ -77,8 +85,12 @@ export class CalendarOverview {
       weeks.push(days.slice(i, i + 7));
     }
 
-    const name = firstDay.toLocaleString('default', { month: 'long' });
+    const monthNames = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December',
+    ];
+    const nameKey = `SoloPlanner.Period.${monthNames[month]}`;
 
-    return { name, year, month, weeks };
+    return { nameKey, year, month, weeks };
   }
 }

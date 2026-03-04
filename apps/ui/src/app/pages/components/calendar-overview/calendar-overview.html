@@ -11,21 +11,21 @@
   <div class="calendar-overview-legend">
     <div class="legend-item">
       <span class="legend-dot legend-dot--holiday"></span>
-      <span class="legend-label">Public Holiday</span>
+      <span class="legend-label">{{ 'SoloPlanner.Legend.PublicHoliday' | translate }}</span>
     </div>
     <div class="legend-item">
       <span class="legend-dot legend-dot--weekend"></span>
-      <span class="legend-label">Weekend</span>
+      <span class="legend-label">{{ 'SoloPlanner.Legend.Weekend' | translate }}</span>
     </div>
   </div>
 
   <div class="calendar-overview-content">
     @for (month of calendarMonths(); track month.month) {
       <div class="calendar-month-card">
-        <div class="calendar-month-header">{{ month.name }}</div>
+        <div class="calendar-month-header">{{ month.nameKey | translate }}</div>
         <div class="calendar-day-grid">
-          @for (header of dayHeaders; track $index) {
-            <div class="calendar-day-header">{{ header }}</div>
+          @for (key of dayHeaderKeys; track $index) {
+            <div class="calendar-day-header">{{ key | translate }}</div>
           }
           @for (week of month.weeks; track $index) {
             @for (day of week; track $index) {
