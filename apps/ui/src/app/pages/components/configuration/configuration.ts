@@ -27,8 +27,8 @@ export class Configuration {
   readonly yearChange = output<number>();
 
   readonly years: SelectOption[] = [
-    { label: '2026', value: '2026' },
-    { label: '2027', value: '2027' },
+    { label: '2026', value: 2026 },
+    { label: '2027', value: 2027 },
   ];
 
   periodFilters: SelectOption[] = [];

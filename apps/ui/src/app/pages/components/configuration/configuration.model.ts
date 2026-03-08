@@ -2,7 +2,7 @@ import { FormControl } from '@angular/forms';
 
 export interface SelectOption {
   label: string;
-  value: string;
+  value: string | number;
 }
 
 export interface ConfigurationForm {
