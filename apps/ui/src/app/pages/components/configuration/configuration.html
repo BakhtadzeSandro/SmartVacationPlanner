@@ -2,17 +2,10 @@
   <h4 class="configuration-title">{{ 'SoloPlanner.Configuration' | translate }}</h4>
 
   <div class="configuration-form">
-    <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="configForm()!" (ngSubmit)="onSubmit()">
       <div class="form-field">
         <label class="form-label">{{ 'SoloPlanner.Country' | translate }}</label>
-        <p-select
-          formControlName="country"
-          [options]="countries"
-          optionLabel="label"
-          optionValue="value"
-          class="w-full"
-        />
-        <small class="form-hint">{{ 'SoloPlanner.CountryHint' | translate }}</small>
+        <p>{{ countryName() }}</p>
       </div>
 
       <div class="form-field">

@@ -10,7 +10,6 @@
   "SoloPlanner": {
     "Configuration": "Configuration",
     "Country": "Country",
-    "CountryHint": "Multi-country support coming soon",
     "Year": "Year",
     "AvailablePtoDays": "Available PTO Days",
     "PeriodFilter": "Period Filter",
