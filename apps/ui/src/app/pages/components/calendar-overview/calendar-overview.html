@@ -33,8 +33,16 @@
                 class="calendar-day-cell"
                 [class.other-month]="!day.isCurrentMonth"
                 [class.weekend]="day.isCurrentMonth && getDayHighlightType(day) === 'weekend'"
-                [class.public-holiday]="day.isCurrentMonth && getDayHighlightType(day) === 'public-holiday'"
+                [class.public-holiday]="
+                  day.isCurrentMonth && getDayHighlightType(day) === 'public-holiday'
+                "
                 [class.pto]="day.isCurrentMonth && getDayHighlightType(day) === 'pto'"
+                [pTooltip]="
+                  day.isCurrentMonth && getDayHighlightType(day) === 'public-holiday'
+                    ? getHolidayTooltip(day)
+                    : ''
+                "
+                tooltipPosition="top"
               >
                 @if (day.isCurrentMonth) {
                   {{ day.day }}

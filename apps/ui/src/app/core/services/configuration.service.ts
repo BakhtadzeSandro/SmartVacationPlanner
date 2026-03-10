@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { PublicHoliday } from '../../pages/components/configuration/configuration.model';
 
 @Injectable({ providedIn: 'root' })
 export class ConfigurationService {
@@ -10,6 +11,6 @@ export class ConfigurationService {
   }
 
   getPublicHolidays(year: number, countryCode: string) {
-    return this.http.get(`https://date.nager.at/api/v3/PublicHolidays/${year}/${countryCode}`);
+    return this.http.get<PublicHoliday[]>(`https://date.nager.at/api/v3/PublicHolidays/${year}/${countryCode}`);
   }
 }

@@ -5,7 +5,7 @@ import { Select } from 'primeng/select';
 import { InputNumber } from 'primeng/inputnumber';
 import { ButtonModule } from 'primeng/button';
 import { ConfigurationService } from '../../../core/services/configuration.service';
-import { ConfigurationForm, SelectOption } from './configuration.model';
+import { ConfigurationForm, PublicHoliday, SelectOption } from './configuration.model';
 import { switchMap, tap } from 'rxjs';
 
 @Component({
@@ -25,6 +25,7 @@ export class Configuration {
   countryCode = signal<string>('');
 
   readonly yearChange = output<number>();
+  readonly holidaysChange = output<PublicHoliday[]>();
 
   readonly years: SelectOption[] = [
     { label: '2026', value: 2026 },
@@ -79,7 +80,7 @@ export class Configuration {
           return this.configurationService.getPublicHolidays(currentYear, response.country_code);
         }),
         tap((response) => {
-          console.log(response);
+          this.holidaysChange.emit(response);
         }),
       )
       .subscribe();
