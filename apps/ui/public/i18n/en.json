@@ -12,6 +12,9 @@
     "Country": "Country",
     "Year": "Year",
     "AvailablePtoDays": "Available PTO Days",
+    "MinPtoDays": "Min PTO per vacation",
+    "MaxPtoDays": "Max PTO per vacation",
+    "EnableMidWeekStarts": "Enable mid-week vacation starts",
     "PeriodFilter": "Period Filter",
     "FindBestVacation": "Find Best Vacation Options",
     "Note": "Note",
@@ -20,7 +23,24 @@
     "CalendarOverviewSubtitle": "Public holidays and weekends highlighted",
     "Legend": {
       "PublicHoliday": "Public Holiday",
-      "Weekend": "Weekend"
+      "Weekend": "Weekend",
+      "PTO": "PTO Day"
+    },
+    "PtoBudgetHint": "This is your total PTO budget for the year",
+    "Results": {
+      "Title": "Vacation Options",
+      "Subtitle": "Click an option to highlight PTO days on the calendar",
+      "SubtitleMulti": "Select multiple options to plan your year. Overlapping or over-budget options are disabled.",
+      "TotalRest": "days rest",
+      "DaysOff": "days off (weekdays)",
+      "PtoDays": "PTO days",
+      "Efficiency": "efficiency",
+      "Holidays": "Holidays",
+      "NoResults": "No vacation options found for the selected period and PTO days.",
+      "MidWeekHint": "{{count}} more option(s) available if you enable mid-week vacation starts.",
+      "PtoBudget": "PTO Budget",
+      "AutoOptimize": "Auto-Optimize",
+      "ClearSelection": "Clear selection"
     },
     "DayHeader": {
       "Mon": "M",

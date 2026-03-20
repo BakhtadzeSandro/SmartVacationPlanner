@@ -1,0 +1,228 @@
+@use 'variables' as *;
+
+.vacation-results-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: 12px;
+
+  @media (max-width: 576px) {
+    padding: 16px;
+  }
+}
+
+.vacation-results-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.vacation-results-title {
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.vacation-results-subtitle {
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.pto-budget-tracker {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pto-budget-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+}
+
+.over-budget {
+  color: #ef4444;
+}
+
+.pto-budget-bar {
+  height: 8px;
+  background-color: var(--border-primary);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.pto-budget-bar-fill {
+  height: 100%;
+  background-color: #3b82f6;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+
+  &.over-budget {
+    background-color: #ef4444;
+  }
+}
+
+.vacation-results-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-auto-optimize {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: #fff;
+  background-color: #3b82f6;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #2563eb;
+  }
+}
+
+.btn-clear-selection {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--text-secondary);
+  background-color: transparent;
+  border: 1px solid var(--border-primary);
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+
+  &:hover {
+    border-color: var(--text-secondary);
+    color: var(--text-primary);
+  }
+}
+
+.vacation-results-list {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--border-primary);
+    border-radius: 3px;
+  }
+}
+
+.vacation-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 220px;
+  max-width: 260px;
+  padding: 16px;
+  background-color: var(--bg-card-alt);
+  border: 2px solid var(--border-primary);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, opacity 0.2s;
+  flex-shrink: 0;
+
+  @media (max-width: 576px) {
+    min-width: 180px;
+    max-width: 220px;
+    padding: 12px;
+  }
+
+  &:hover {
+    border-color: #3b82f6;
+  }
+
+  &.selected {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  }
+
+  &.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+.vacation-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.date-range {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+}
+
+.efficiency-badge {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: #2563eb;
+  background-color: #dbeafe;
+  padding: 2px 8px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+.vacation-card-stats {
+  display: flex;
+  gap: 12px;
+}
+
+.stat {
+  font-size: $font-size-xs;
+  color: var(--text-secondary);
+
+  strong {
+    color: var(--text-primary);
+  }
+}
+
+.vacation-card-holidays {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.holiday-tag {
+  font-size: 11px;
+  color: #10b981;
+  background-color: rgba(16, 185, 129, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.no-results {
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 16px;
+  margin: 0;
+}
+
+.mid-week-hint {
+  font-size: $font-size-sm;
+  color: #3b82f6;
+  text-align: center;
+  padding: 0 16px 16px;
+  margin: 0;
+}

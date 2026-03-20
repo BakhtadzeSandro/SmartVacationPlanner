@@ -17,6 +17,12 @@
       <span class="legend-dot legend-dot--weekend"></span>
       <span class="legend-label">{{ 'SoloPlanner.Legend.Weekend' | translate }}</span>
     </div>
+    @if (highlightedPtoDates().length > 0) {
+      <div class="legend-item">
+        <span class="legend-dot legend-dot--pto"></span>
+        <span class="legend-label">{{ 'SoloPlanner.Legend.PTO' | translate }}</span>
+      </div>
+    }
   </div>
 
   <div class="calendar-overview-content">

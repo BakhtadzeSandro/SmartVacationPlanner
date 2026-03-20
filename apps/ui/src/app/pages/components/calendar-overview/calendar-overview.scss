@@ -4,6 +4,10 @@
   display: flex;
   flex-direction: column;
   padding: 24px;
+
+  @media (max-width: 576px) {
+    padding: 16px;
+  }
 }
 
 .calendar-overview-header {
@@ -52,6 +56,10 @@
 
   &--weekend {
     background-color: var(--bg-legend-weekend);
+  }
+
+  &--pto {
+    background-color: #3b82f6;
   }
 }
 

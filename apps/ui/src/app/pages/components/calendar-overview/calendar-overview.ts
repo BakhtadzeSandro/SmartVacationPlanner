@@ -36,6 +36,9 @@ export class CalendarOverview {
 
   readonly selectedYear = input(new Date().getFullYear());
   readonly holidays = input<PublicHoliday[]>([]);
+  readonly highlightedPtoDates = input<string[]>([]);
+
+  readonly ptoDatesSet = computed(() => new Set(this.highlightedPtoDates()));
 
   readonly holidayMap = computed(() => {
     const map = new Map<string, PublicHoliday>();
@@ -72,6 +75,12 @@ export class CalendarOverview {
   });
 
   getDayHighlightType(date: { year: number; month: number; day: number }): DayHighlightType | null {
+    const dateStr = `${date.year}-${String(date.month + 1).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
+
+    if (this.ptoDatesSet().has(dateStr)) {
+      return 'pto';
+    }
+
     const d = new Date(date.year, date.month, date.day);
     const dayOfWeek = d.getDay();
 
@@ -79,7 +88,6 @@ export class CalendarOverview {
       return 'weekend';
     }
 
-    const dateStr = `${date.year}-${String(date.month + 1).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
     if (this.holidayMap().has(dateStr)) {
       return 'public-holiday';
     }

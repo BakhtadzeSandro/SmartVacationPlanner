@@ -1,0 +1,76 @@
+@if (hasSearched()) {
+  <div class="vacation-results-container">
+    <div class="vacation-results-header">
+      <h4 class="vacation-results-title">{{ 'SoloPlanner.Results.Title' | translate }}</h4>
+      <p class="vacation-results-subtitle">{{ 'SoloPlanner.Results.SubtitleMulti' | translate }}</p>
+    </div>
+
+    @if (results().length > 0) {
+      <div class="pto-budget-tracker">
+        <div class="pto-budget-label">
+          <span>{{ 'SoloPlanner.Results.PtoBudget' | translate }}</span>
+          <span [class.over-budget]="totalPtoUsed() > ptoBudget()">
+            {{ totalPtoUsed() }} / {{ ptoBudget() }}
+          </span>
+        </div>
+        <div class="pto-budget-bar">
+          <div
+            class="pto-budget-bar-fill"
+            [class.over-budget]="totalPtoUsed() > ptoBudget()"
+            [style.width.%]="budgetPercent()"
+          ></div>
+        </div>
+      </div>
+
+      <div class="vacation-results-actions">
+        <button class="btn-auto-optimize" (click)="autoOptimize.emit()">
+          {{ 'SoloPlanner.Results.AutoOptimize' | translate }}
+        </button>
+        @if (selectedOptions().length > 0) {
+          <button class="btn-clear-selection" (click)="clearSelection.emit()">
+            {{ 'SoloPlanner.Results.ClearSelection' | translate }}
+          </button>
+        }
+      </div>
+
+      <div class="vacation-results-list">
+        @for (option of results(); track option.startDate + option.endDate) {
+          <div
+            class="vacation-card"
+            [class.selected]="isSelected(option)"
+            [class.disabled]="isDisabled(option)"
+            (click)="onCardClick(option)"
+          >
+            <div class="vacation-card-header">
+              <span class="date-range">{{ formatDateRange(option.startDate, option.endDate) }}</span>
+              <span class="efficiency-badge">{{ option.efficiency }}x</span>
+            </div>
+            <div class="vacation-card-stats">
+              <span class="stat">
+                <strong>{{ option.totalRestDays }}</strong> {{ 'SoloPlanner.Results.TotalRest' | translate }}
+              </span>
+              <span class="stat">
+                <strong>{{ option.totalDaysOff }}</strong> {{ 'SoloPlanner.Results.DaysOff' | translate }}
+              </span>
+              <span class="stat">
+                <strong>{{ option.ptoDaysUsed }}</strong> {{ 'SoloPlanner.Results.PtoDays' | translate }}
+              </span>
+            </div>
+            @if (option.holidaysIncluded.length > 0) {
+              <div class="vacation-card-holidays">
+                @for (holiday of option.holidaysIncluded; track holiday.date) {
+                  <span class="holiday-tag">{{ holiday.name }}</span>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    } @else {
+      <p class="no-results">{{ 'SoloPlanner.Results.NoResults' | translate }}</p>
+      @if (midWeekFilteredCount() > 0) {
+        <p class="mid-week-hint">{{ 'SoloPlanner.Results.MidWeekHint' | translate:{ count: midWeekFilteredCount() } }}</p>
+      }
+    }
+  </div>
+}

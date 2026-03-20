@@ -1,7 +1,11 @@
 <div class="solo-planner-container">
   <div class="sidebar-column">
     <aside class="sidebar">
-      <app-configuration (yearChange)="onYearChange($event)" (holidaysChange)="onHolidaysChange($event)"></app-configuration>
+      <app-configuration
+        (yearChange)="onYearChange($event)"
+        (holidaysChange)="onHolidaysChange($event)"
+        (searchChange)="onSearch($event)"
+      ></app-configuration>
     </aside>
     <div class="tip-container">
       <p>
@@ -11,6 +15,21 @@
     </div>
   </div>
   <main class="content">
-    <app-calendar-overview [selectedYear]="selectedYear()" [holidays]="holidays()"></app-calendar-overview>
+    <app-vacation-results
+      [results]="vacationResults()"
+      [selectedOptions]="selectedOptions()"
+      [ptoBudget]="ptoBudget()"
+      [totalPtoUsed]="totalPtoUsed()"
+      [hasSearched]="hasSearched()"
+      [midWeekFilteredCount]="midWeekFilteredCount()"
+      (optionToggle)="onToggleOption($event)"
+      (autoOptimize)="onAutoOptimize()"
+      (clearSelection)="onClearSelection()"
+    ></app-vacation-results>
+    <app-calendar-overview
+      [selectedYear]="selectedYear()"
+      [holidays]="holidays()"
+      [highlightedPtoDates]="allPtoDates()"
+    ></app-calendar-overview>
   </main>
 </div>

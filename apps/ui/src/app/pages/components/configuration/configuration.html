@@ -31,12 +31,40 @@
       </div>
 
       <div class="form-field">
+        <label class="form-label">{{ 'SoloPlanner.MinPtoDays' | translate }}</label>
+        <p-inputnumber
+          formControlName="minPtoDays"
+          [min]="1"
+          [max]="configForm()!.get('maxPtoDays')!.value"
+          [showButtons]="true"
+          class="input-number"
+        />
+      </div>
+
+      <div class="form-field">
+        <label class="form-label">{{ 'SoloPlanner.MaxPtoDays' | translate }}</label>
+        <p-inputnumber
+          formControlName="maxPtoDays"
+          [min]="configForm()!.get('minPtoDays')!.value"
+          [max]="configForm()!.get('ptoDays')!.value"
+          [showButtons]="true"
+          class="input-number"
+        />
+      </div>
+
+      <div class="form-field">
+        <label class="form-label">{{ 'SoloPlanner.EnableMidWeekStarts' | translate }}</label>
+        <p-toggleswitch formControlName="enableMidWeekStarts" />
+      </div>
+
+      <div class="form-field">
         <label class="form-label">{{ 'SoloPlanner.PeriodFilter' | translate }}</label>
         <p-select
           formControlName="periodFilter"
           [options]="periodFilters"
           optionLabel="label"
           optionValue="value"
+          optionDisabled="disabled"
           class="w-full"
         />
       </div>
