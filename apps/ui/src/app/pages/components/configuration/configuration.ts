@@ -152,6 +152,7 @@ export class Configuration {
         if (value) {
           this.yearChange.emit(Number(value));
           this.loadPeriodFilters();
+          this.refreshHolidays(Number(value));
         }
       });
   }
@@ -183,6 +184,14 @@ export class Configuration {
       if (maxCtrl.value < minPto) {
         maxCtrl.setValue(minPto);
       }
+    });
+  }
+
+  private refreshHolidays(year: number): void {
+    const code = this.countryCode();
+    if (!code) return;
+    this.configurationService.getPublicHolidays(year, code).subscribe((response) => {
+      this.holidaysChange.emit(response);
     });
   }
 
