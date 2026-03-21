@@ -10,6 +10,7 @@ import {
   findOptimalVacations,
   VacationOption,
 } from '../../../../core/utils/vacation-optimizer';
+import { downloadIcs, generateIcs } from '../../../../core/utils/ics-export';
 
 @Component({
   selector: 'app-solo-planner',
@@ -100,5 +101,9 @@ export class SoloPlanner {
 
   onClearSelection(): void {
     this.selectedOptions.set([]);
+  }
+
+  onExportCalendar(): void {
+    downloadIcs(generateIcs(this.selectedOptions()));
   }
 }

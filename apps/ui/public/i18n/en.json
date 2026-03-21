@@ -46,7 +46,9 @@
       "SortByEfficiency": "Most efficient",
       "AutoOptimizeTooltip": "Picks the best combination of non-overlapping vacations to maximize your days off within your PTO budget",
       "SortByRestTooltip": "Sort by total consecutive days off, longest vacations first",
-      "SortByEfficiencyTooltip": "Sort by rest days per PTO day used, best bang for your buck first"
+      "SortByEfficiencyTooltip": "Sort by rest days per PTO day used, best bang for your buck first",
+      "ExportCalendar": "Export .ics",
+      "ExportCalendarTooltip": "Download selected vacations as a calendar file you can import into Google Calendar, Outlook, or Apple Calendar"
     },
     "DayHeader": {
       "Mon": "M",

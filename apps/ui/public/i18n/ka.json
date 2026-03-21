@@ -47,7 +47,9 @@
       "SortByEfficiency": "ეფექტურობის მიხედვით",
       "AutoOptimizeTooltip": "ირჩევს შვებულებების საუკეთესო კომბინაციას ბიუჯეტის ფარგლებში მაქსიმალური დასვენებისთვის",
       "SortByRestTooltip": "დალაგება დასვენების დღეების საერთო რაოდენობის მიხედვით",
-      "SortByEfficiencyTooltip": "დალაგება შვებულების დღეებისა და დასვენების თანაფარდობით"
+      "SortByEfficiencyTooltip": "დალაგება შვებულების დღეებისა და დასვენების თანაფარდობით",
+      "ExportCalendar": ".ics ექსპორტი",
+      "ExportCalendarTooltip": "შერჩეული შვებულებების ჩამოტვირთვა კალენდარის ფაილად Google Calendar-ში, Outlook-ში ან Apple Calendar-ში იმპორტისთვის"
     },
     "DayHeader": {
       "Mon": "ორ",

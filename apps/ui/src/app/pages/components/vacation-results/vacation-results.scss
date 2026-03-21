@@ -90,6 +90,25 @@
   }
 }
 
+.btn-export {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: #fff;
+  background-color: #10b981;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #059669;
+  }
+}
+
 .btn-clear-selection {
   font-size: $font-size-sm;
   font-weight: $font-weight-semibold;

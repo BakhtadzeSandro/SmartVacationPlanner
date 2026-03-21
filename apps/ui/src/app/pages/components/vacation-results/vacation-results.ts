@@ -20,6 +20,7 @@ export class VacationResults {
   readonly optionToggle = output<VacationOption>();
   readonly autoOptimize = output<void>();
   readonly clearSelection = output<void>();
+  readonly exportCalendar = output<void>();
 
   readonly sortMode = signal<'rest' | 'efficiency'>('rest');
 
