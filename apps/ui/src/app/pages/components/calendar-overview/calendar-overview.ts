@@ -1,8 +1,7 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { TooltipModule } from 'primeng/tooltip';
 import { PublicHoliday } from '../configuration/configuration.model';
-import { TranslationService } from '../../../core/services/translation.service';
 
 export type DayHighlightType = 'weekend' | 'public-holiday' | 'pto';
 
@@ -11,6 +10,8 @@ export interface CalendarDay {
   month: number;
   year: number;
   isCurrentMonth: boolean;
+  highlightType: DayHighlightType | null;
+  holidayTooltip: string;
 }
 
 export interface CalendarMonth {
@@ -27,20 +28,13 @@ export interface CalendarMonth {
   imports: [TranslateModule, TooltipModule],
 })
 export class CalendarOverview {
-  private readonly translationService = inject(TranslationService);
-
-  private readonly langToCountryCode: Record<string, string> = {
-    ka: 'ge',
-    en: 'us',
-  };
-
   readonly selectedYear = input(new Date().getFullYear());
   readonly holidays = input<PublicHoliday[]>([]);
   readonly highlightedPtoDates = input<string[]>([]);
 
-  readonly ptoDatesSet = computed(() => new Set(this.highlightedPtoDates()));
+  private readonly ptoDatesSet = computed(() => new Set(this.highlightedPtoDates()));
 
-  readonly holidayMap = computed(() => {
+  private readonly holidayMap = computed(() => {
     const map = new Map<string, PublicHoliday>();
     for (const h of this.holidays()) {
       map.set(h.date, h);
@@ -48,13 +42,10 @@ export class CalendarOverview {
     return map;
   });
 
-  readonly holidayTooltipMap = computed(() => {
-    const lang = this.translationService.currentLang().toLowerCase();
-    const mappedCode = this.langToCountryCode[lang] ?? lang;
+  private readonly holidayTooltipMap = computed(() => {
     const map = new Map<string, string>();
     for (const [date, holiday] of this.holidayMap()) {
-      const code = holiday.countryCode.toLowerCase();
-      map.set(date, mappedCode === code ? holiday.localName : holiday.name);
+      map.set(date, holiday.name);
     }
     return map;
   });
@@ -71,36 +62,45 @@ export class CalendarOverview {
 
   readonly calendarMonths = computed(() => {
     const year = this.selectedYear();
-    return Array.from({ length: 12 }, (_, i) => this.buildMonth(year, i));
+    const ptoDates = this.ptoDatesSet();
+    const holidayDates = this.holidayMap();
+    const tooltips = this.holidayTooltipMap();
+    return Array.from({ length: 12 }, (_, i) =>
+      this.buildMonth(year, i, ptoDates, holidayDates, tooltips),
+    );
   });
 
-  getDayHighlightType(date: { year: number; month: number; day: number }): DayHighlightType | null {
-    const dateStr = `${date.year}-${String(date.month + 1).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
+  private formatDateStr(year: number, month: number, day: number): string {
+    return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  }
 
-    if (this.ptoDatesSet().has(dateStr)) {
-      return 'pto';
-    }
+  private getHighlightType(
+    year: number,
+    month: number,
+    day: number,
+    ptoDates: Set<string>,
+    holidayDates: Map<string, PublicHoliday>,
+  ): DayHighlightType | null {
+    const dateStr = this.formatDateStr(year, month, day);
 
-    const d = new Date(date.year, date.month, date.day);
+    if (ptoDates.has(dateStr)) return 'pto';
+
+    const d = new Date(year, month, day);
     const dayOfWeek = d.getDay();
+    if (dayOfWeek === 0 || dayOfWeek === 6) return 'weekend';
 
-    if (dayOfWeek === 0 || dayOfWeek === 6) {
-      return 'weekend';
-    }
-
-    if (this.holidayMap().has(dateStr)) {
-      return 'public-holiday';
-    }
+    if (holidayDates.has(dateStr)) return 'public-holiday';
 
     return null;
   }
 
-  getHolidayTooltip(day: CalendarDay): string {
-    const dateStr = `${day.year}-${String(day.month + 1).padStart(2, '0')}-${String(day.day).padStart(2, '0')}`;
-    return this.holidayTooltipMap().get(dateStr) ?? '';
-  }
-
-  private buildMonth(year: number, month: number): CalendarMonth {
+  private buildMonth(
+    year: number,
+    month: number,
+    ptoDates: Set<string>,
+    holidayDates: Map<string, PublicHoliday>,
+    tooltips: Map<string, string>,
+  ): CalendarMonth {
     const firstDay = new Date(year, month, 1);
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
@@ -109,7 +109,7 @@ export class CalendarOverview {
 
     const days: CalendarDay[] = [];
 
-    // Previous month padding (empty placeholders)
+    // Previous month padding
     const prevMonthDays = new Date(year, month, 0).getDate();
     for (let i = startDow - 1; i >= 0; i--) {
       const d = new Date(year, month - 1, prevMonthDays - i);
@@ -118,12 +118,22 @@ export class CalendarOverview {
         month: d.getMonth(),
         year: d.getFullYear(),
         isCurrentMonth: false,
+        highlightType: null,
+        holidayTooltip: '',
       });
     }
 
     // Current month
     for (let d = 1; d <= daysInMonth; d++) {
-      days.push({ day: d, month, year, isCurrentMonth: true });
+      const dateStr = this.formatDateStr(year, month, d);
+      days.push({
+        day: d,
+        month,
+        year,
+        isCurrentMonth: true,
+        highlightType: this.getHighlightType(year, month, d, ptoDates, holidayDates),
+        holidayTooltip: tooltips.get(dateStr) ?? '',
+      });
     }
 
     // Next month padding
@@ -135,6 +145,8 @@ export class CalendarOverview {
         month: d.getMonth(),
         year: d.getFullYear(),
         isCurrentMonth: false,
+        highlightType: null,
+        holidayTooltip: '',
       });
     }
 

@@ -1,6 +1,7 @@
-import { Component, inject, output, signal } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import { Component, DestroyRef, inject, OnInit, output, signal } from '@angular/core';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Select } from 'primeng/select';
 import { InputNumber } from 'primeng/inputnumber';
 import { ToggleSwitch } from 'primeng/toggleswitch';
@@ -41,18 +42,19 @@ const PERIOD_MONTHS: Record<string, number[]> = {
   styleUrl: './configuration.scss',
   imports: [ReactiveFormsModule, TranslateModule, Select, InputNumber, ToggleSwitch, ButtonModule, Skeleton],
 })
-export class Configuration {
+export class Configuration implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly translate = inject(TranslateService);
   private readonly configurationService = inject(ConfigurationService);
+  private readonly destroyRef = inject(DestroyRef);
 
-  readonly configForm = signal<FormGroup<ConfigurationForm> | undefined>(undefined);
+  readonly configForm = this.buildForm();
 
-  countryName = signal<string>('');
-  countryCode = signal<string>('');
-  minimumLeaveDays = signal<number | null>(null);
-  loading = signal(true);
-  error = signal(false);
+  readonly countryName = signal<string>('');
+  readonly countryCode = signal<string>('');
+  readonly minimumLeaveDays = signal<number | null>(null);
+  readonly loading = signal(true);
+  readonly error = signal(false);
 
   readonly yearChange = output<number>();
   readonly holidaysChange = output<PublicHoliday[]>();
@@ -85,41 +87,39 @@ export class Configuration {
     'December',
   ];
 
-  constructor() {}
-
   private loadPeriodFilters(): void {
-    const selectedYear = this.configForm()?.get('year')?.value ?? new Date().getFullYear();
+    const selectedYear = this.configForm.controls.year.value;
     const now = new Date();
     const currentYear = now.getFullYear();
     const currentMonth = now.getMonth();
 
     const keys = this.periodFilterKeys.map((k) => `SoloPlanner.Period.${k}`);
-    this.translate.get(keys).subscribe((translations) => {
-      this.periodFilters = this.periodFilterKeys.map((k) => {
-        const months = PERIOD_MONTHS[k] ?? [];
-        // Disable if all months in this period are in the past for the selected year
-        const allPast = selectedYear === currentYear && months.every((m) => m < currentMonth);
-        return {
-          label: translations[`SoloPlanner.Period.${k}`],
-          value: k,
-          disabled: allPast,
-        };
-      });
+    this.translate
+      .get(keys)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((translations) => {
+        this.periodFilters = this.periodFilterKeys.map((k) => {
+          const months = PERIOD_MONTHS[k] ?? [];
+          const allPast = selectedYear === currentYear && months.every((m) => m < currentMonth);
+          return {
+            label: translations[`SoloPlanner.Period.${k}`],
+            value: k,
+            disabled: allPast,
+          };
+        });
 
-      // If currently selected filter is now disabled, reset to 'all-year'
-      const currentFilter = this.configForm()?.get('periodFilter')?.value;
-      const currentOption = this.periodFilters.find((f) => f.value === currentFilter);
-      if (currentOption?.disabled) {
-        this.configForm()?.get('periodFilter')?.setValue('all-year');
-      }
-    });
+        const currentFilter = this.configForm.controls.periodFilter.value;
+        const currentOption = this.periodFilters.find((f) => f.value === currentFilter);
+        if (currentOption?.disabled) {
+          this.configForm.controls.periodFilter.setValue('all-year');
+        }
+      });
   }
 
   onSubmit(): void {
-    const form = this.configForm();
-    if (!form) return;
+    if (this.configForm.invalid) return;
     const { year, ptoDays, minPtoDays, maxPtoDays, periodFilter, enableMidWeekStarts } =
-      form.getRawValue();
+      this.configForm.getRawValue();
     this.searchChange.emit({
       year,
       ptoDays,
@@ -131,7 +131,7 @@ export class Configuration {
   }
 
   private getCountryInformation(): void {
-    const currentYear = this.configForm()?.get('year')?.value;
+    const currentYear = this.configForm.controls.year.value;
     if (!currentYear) return;
     this.loading.set(true);
     this.error.set(false);
@@ -149,10 +149,9 @@ export class Configuration {
         tap(({ holidays, leave }) => {
           this.holidaysChange.emit(holidays);
           this.minimumLeaveDays.set(leave.minimumLeaveDays);
-          const form = this.configForm();
-          if (form && leave.minimumLeaveDays !== null) {
-            form.get('ptoDays')!.setValue(leave.minimumLeaveDays);
-            form.get('maxPtoDays')!.setValue(leave.minimumLeaveDays);
+          if (leave.minimumLeaveDays !== null) {
+            this.configForm.controls.ptoDays.setValue(leave.minimumLeaveDays);
+            this.configForm.controls.maxPtoDays.setValue(leave.minimumLeaveDays);
           }
         }),
         catchError(() => {
@@ -160,6 +159,7 @@ export class Configuration {
           return EMPTY;
         }),
         finalize(() => this.loading.set(false)),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe();
   }
@@ -168,23 +168,22 @@ export class Configuration {
     this.getCountryInformation();
   }
 
-  private buildForm(): void {
+  private buildForm(): FormGroup<ConfigurationForm> {
     const fb = this.fb.nonNullable;
-    const form = fb.group({
-      year: fb.control<number>(new Date().getFullYear()),
-      ptoDays: fb.control<number>(10),
-      minPtoDays: fb.control<number>(1),
-      maxPtoDays: fb.control<number>(10),
+    return fb.group({
+      year: fb.control<number>(new Date().getFullYear(), [Validators.required]),
+      ptoDays: fb.control<number>(10, [Validators.required, Validators.min(1), Validators.max(365)]),
+      minPtoDays: fb.control<number>(1, [Validators.required, Validators.min(1)]),
+      maxPtoDays: fb.control<number>(10, [Validators.required, Validators.min(1)]),
       periodFilter: fb.control<string>('all-year'),
       enableMidWeekStarts: fb.control<boolean>(false),
     });
-    this.configForm.set(form);
   }
 
-  listenToYearChanges() {
-    this.configForm()
-      ?.get('year')
-      ?.valueChanges.subscribe((value) => {
+  private listenToYearChanges(): void {
+    this.configForm.controls.year.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((value) => {
         if (value) {
           this.yearChange.emit(Number(value));
           this.loadPeriodFilters();
@@ -194,33 +193,34 @@ export class Configuration {
   }
 
   private listenToPtoChanges(): void {
-    const form = this.configForm();
-    if (!form) return;
+    const { ptoDays, maxPtoDays, minPtoDays } = this.configForm.controls;
 
-    form.get('ptoDays')!.valueChanges.subscribe((ptoDays) => {
-      const maxCtrl = form.get('maxPtoDays')!;
-      const minCtrl = form.get('minPtoDays')!;
-      if (maxCtrl.value > ptoDays) {
-        maxCtrl.setValue(ptoDays);
-      }
-      if (minCtrl.value > maxCtrl.value) {
-        minCtrl.setValue(maxCtrl.value);
-      }
-    });
+    ptoDays.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((pto) => {
+        if (maxPtoDays.value > pto) {
+          maxPtoDays.setValue(pto);
+        }
+        if (minPtoDays.value > maxPtoDays.value) {
+          minPtoDays.setValue(maxPtoDays.value);
+        }
+      });
 
-    form.get('maxPtoDays')!.valueChanges.subscribe((maxPto) => {
-      const minCtrl = form.get('minPtoDays')!;
-      if (minCtrl.value > maxPto) {
-        minCtrl.setValue(maxPto);
-      }
-    });
+    maxPtoDays.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((maxPto) => {
+        if (minPtoDays.value > maxPto) {
+          minPtoDays.setValue(maxPto);
+        }
+      });
 
-    form.get('minPtoDays')!.valueChanges.subscribe((minPto) => {
-      const maxCtrl = form.get('maxPtoDays')!;
-      if (maxCtrl.value < minPto) {
-        maxCtrl.setValue(minPto);
-      }
-    });
+    minPtoDays.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((minPto) => {
+        if (maxPtoDays.value < minPto) {
+          maxPtoDays.setValue(minPto);
+        }
+      });
   }
 
   private refreshHolidays(year: number): void {
@@ -228,20 +228,17 @@ export class Configuration {
     if (!code) return;
     this.configurationService
       .getPublicHolidays(year, code)
-      .pipe(catchError(() => EMPTY))
+      .pipe(
+        catchError(() => EMPTY),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe((response) => {
         this.holidaysChange.emit(response);
       });
   }
 
-  listenToLanguageChanges() {
-    this.translate.onLangChange.subscribe(() => this.loadPeriodFilters());
-  }
-
   ngOnInit(): void {
-    this.buildForm();
     this.getCountryInformation();
-    this.listenToLanguageChanges();
     this.loadPeriodFilters();
     this.listenToYearChanges();
     this.listenToPtoChanges();

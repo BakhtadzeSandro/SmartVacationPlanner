@@ -13,7 +13,14 @@
             {{ totalPtoUsed() }} / {{ ptoBudget() }}
           </span>
         </div>
-        <div class="pto-budget-bar">
+        <div
+          class="pto-budget-bar"
+          role="progressbar"
+          [attr.aria-valuenow]="budgetPercent()"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          [attr.aria-label]="'SoloPlanner.Results.PtoBudget' | translate"
+        >
           <div
             class="pto-budget-bar-fill"
             [class.over-budget]="totalPtoUsed() > ptoBudget()"
@@ -45,13 +52,18 @@
         </div>
       </div>
 
-      <div class="vacation-results-list">
+      <div class="vacation-results-list" role="list">
         @for (option of sortedResults(); track option.startDate + option.endDate) {
           <div
             class="vacation-card"
+            role="listitem button"
+            [tabindex]="isDisabled(option) ? -1 : 0"
             [class.selected]="isSelected(option)"
             [class.disabled]="isDisabled(option)"
+            [attr.aria-pressed]="isSelected(option)"
+            [attr.aria-disabled]="isDisabled(option)"
             (click)="onCardClick(option)"
+            (keydown)="onCardKeydown($event, option)"
           >
             <div class="vacation-card-header">
               <span class="date-range">{{ formatDateRange(option.startDate, option.endDate) }}</span>

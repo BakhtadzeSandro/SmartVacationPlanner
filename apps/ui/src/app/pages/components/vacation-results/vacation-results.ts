@@ -49,6 +49,13 @@ export class VacationResults {
     this.optionToggle.emit(option);
   }
 
+  onCardKeydown(event: KeyboardEvent, option: VacationOption): void {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.onCardClick(option);
+    }
+  }
+
   formatDateRange(startDate: string, endDate: string): string {
     const start = new Date(startDate + 'T00:00:00');
     const end = new Date(endDate + 'T00:00:00');

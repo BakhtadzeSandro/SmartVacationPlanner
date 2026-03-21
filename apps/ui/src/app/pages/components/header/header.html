@@ -5,26 +5,6 @@
       <div class="header-subtitle">{{ 'Header.Subtitle' | translate }}</div>
     </div>
     <div class="header-right">
-      <button class="header-btn lang-btn" type="button" (click)="langPopover.toggle($event)">
-        <i class="pi pi-globe"></i>
-        <span class="lang-label">{{ currentLang() | uppercase }}</span>
-        <i class="pi pi-chevron-down chevron"></i>
-      </button>
-      <p-popover #langPopover>
-        <div class="lang-options">
-          @for (lang of languages; track lang.code) {
-            <button
-              class="lang-option"
-              type="button"
-              [class.active]="lang.code === currentLang()"
-              (click)="switchLanguage(lang.code); langPopover.hide()"
-            >
-              {{ lang.label }}
-            </button>
-          }
-        </div>
-      </p-popover>
-
       <button
         class="header-btn theme-btn"
         type="button"

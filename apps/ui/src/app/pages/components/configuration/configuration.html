@@ -25,7 +25,7 @@
     </div>
   } @else {
     <div class="configuration-form">
-      <form [formGroup]="configForm()!" (ngSubmit)="onSubmit()">
+      <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
         <div class="form-field">
           <label class="form-label">{{ 'SoloPlanner.Country' | translate }}</label>
           <div class="country-display">
@@ -73,7 +73,7 @@
           <p-inputnumber
             formControlName="minPtoDays"
             [min]="1"
-            [max]="configForm()!.get('maxPtoDays')!.value"
+            [max]="configForm.controls.maxPtoDays.value"
             [showButtons]="true"
             class="input-number"
           />
@@ -83,8 +83,8 @@
           <label class="form-label">{{ 'SoloPlanner.MaxPtoDays' | translate }}</label>
           <p-inputnumber
             formControlName="maxPtoDays"
-            [min]="configForm()!.get('minPtoDays')!.value"
-            [max]="configForm()!.get('ptoDays')!.value"
+            [min]="configForm.controls.minPtoDays.value"
+            [max]="configForm.controls.ptoDays.value"
             [showButtons]="true"
             class="input-number"
           />

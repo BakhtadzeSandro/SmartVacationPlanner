@@ -51,7 +51,7 @@
   display: inline-block;
 
   &--holiday {
-    background-color: #10b981;
+    background-color: var(--color-success);
   }
 
   &--weekend {
@@ -59,7 +59,7 @@
   }
 
   &--pto {
-    background-color: #3b82f6;
+    background-color: var(--color-primary);
   }
 }
 
@@ -135,8 +135,8 @@
   }
 
   &.public-holiday {
-    background-color: #10b981;
-    color: #fff;
+    background-color: var(--color-success);
+    color: var(--color-on-primary);
     border-radius: 12px;
     font-weight: $font-weight-semibold;
     width: 28px;
@@ -146,8 +146,8 @@
   }
 
   &.pto {
-    background-color: #dbeafe;
-    color: #2563eb;
+    background-color: var(--bg-pto-cell);
+    color: var(--text-pto-cell);
     border-radius: 12px;
     font-weight: $font-weight-semibold;
     width: 28px;

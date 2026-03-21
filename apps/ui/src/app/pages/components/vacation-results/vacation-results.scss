@@ -46,7 +46,7 @@
 }
 
 .over-budget {
-  color: #ef4444;
+  color: var(--color-danger);
 }
 
 .pto-budget-bar {
@@ -58,12 +58,12 @@
 
 .pto-budget-bar-fill {
   height: 100%;
-  background-color: #3b82f6;
+  background-color: var(--color-primary);
   border-radius: 4px;
   transition: width 0.3s ease;
 
   &.over-budget {
-    background-color: #ef4444;
+    background-color: var(--color-danger);
   }
 }
 
@@ -77,8 +77,8 @@
 .btn-auto-optimize {
   font-size: $font-size-sm;
   font-weight: $font-weight-semibold;
-  color: #fff;
-  background-color: #3b82f6;
+  color: var(--color-on-primary);
+  background-color: var(--color-primary);
   border: none;
   padding: 8px 16px;
   border-radius: 6px;
@@ -86,7 +86,7 @@
   transition: background-color 0.2s;
 
   &:hover {
-    background-color: #2563eb;
+    background-color: var(--color-primary-hover);
   }
 }
 
@@ -96,8 +96,8 @@
   gap: 6px;
   font-size: $font-size-sm;
   font-weight: $font-weight-semibold;
-  color: #fff;
-  background-color: #10b981;
+  color: var(--color-on-primary);
+  background-color: var(--color-success);
   border: none;
   padding: 8px 16px;
   border-radius: 6px;
@@ -105,7 +105,7 @@
   transition: background-color 0.2s;
 
   &:hover {
-    background-color: #059669;
+    background-color: var(--color-success-hover);
   }
 }
 
@@ -149,9 +149,9 @@
   }
 
   &.active {
-    color: #fff;
-    background-color: #3b82f6;
-    border-color: #3b82f6;
+    color: var(--color-on-primary);
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
   }
 }
 
@@ -192,18 +192,23 @@
   }
 
   &:hover {
-    border-color: #3b82f6;
+    border-color: var(--color-primary);
   }
 
   &.selected {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--shadow-selected);
   }
 
   &.disabled {
     opacity: 0.4;
     cursor: not-allowed;
     pointer-events: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
   }
 }
 
@@ -223,8 +228,8 @@
 .efficiency-badge {
   font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
-  color: #2563eb;
-  background-color: #dbeafe;
+  color: var(--text-efficiency-badge);
+  background-color: var(--bg-efficiency-badge);
   padding: 2px 8px;
   border-radius: 12px;
   white-space: nowrap;
@@ -252,8 +257,8 @@
 
 .holiday-tag {
   font-size: 11px;
-  color: #10b981;
-  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--text-holiday-tag);
+  background-color: var(--bg-holiday-tag);
   padding: 2px 6px;
   border-radius: 4px;
   white-space: nowrap;
@@ -269,7 +274,7 @@
 
 .mid-week-hint {
   font-size: $font-size-sm;
-  color: #3b82f6;
+  color: var(--text-accent);
   text-align: center;
   padding: 0 16px 16px;
   margin: 0;
