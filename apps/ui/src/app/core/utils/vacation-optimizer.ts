@@ -212,20 +212,13 @@ export function findOptimalVacations(
   const allowedMonths = getMonthsForPeriod(periodFilter);
   let filtered = withHolidays;
   if (allowedMonths) {
-    filtered = results.filter((r) => {
+    filtered = withHolidays.filter((r) => {
       const startMonth = new Date(r.startDate + 'T00:00:00').getMonth();
       return allowedMonths.includes(startMonth);
     });
   }
 
-  // Sort by efficiency desc, then totalRestDays desc
-  filtered.sort((a, b) => {
-    if (b.efficiency !== a.efficiency) return b.efficiency - a.efficiency;
-    return b.totalRestDays - a.totalRestDays;
-  });
-
-  // Cap at 20 results
-  return filtered.slice(0, 20);
+  return filtered.slice(0, 50);
 }
 
 export function doOptionsOverlap(a: VacationOption, b: VacationOption): boolean {

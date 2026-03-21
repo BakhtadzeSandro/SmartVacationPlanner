@@ -1,12 +1,13 @@
 import { Component, computed, input, output, signal } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { TooltipModule } from 'primeng/tooltip';
 import { doOptionsOverlap, VacationOption } from '../../../core/utils/vacation-optimizer';
 
 @Component({
   selector: 'app-vacation-results',
   templateUrl: './vacation-results.html',
   styleUrl: './vacation-results.scss',
-  imports: [TranslateModule],
+  imports: [TranslateModule, TooltipModule],
 })
 export class VacationResults {
   readonly results = input<VacationOption[]>([]);

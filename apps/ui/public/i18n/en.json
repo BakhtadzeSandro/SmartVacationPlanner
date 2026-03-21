@@ -43,7 +43,10 @@
       "AutoOptimize": "Auto-Optimize",
       "ClearSelection": "Clear selection",
       "SortByRest": "Most rest days",
-      "SortByEfficiency": "Most efficient"
+      "SortByEfficiency": "Most efficient",
+      "AutoOptimizeTooltip": "Picks the best combination of non-overlapping vacations to maximize your days off within your PTO budget",
+      "SortByRestTooltip": "Sort by total consecutive days off, longest vacations first",
+      "SortByEfficiencyTooltip": "Sort by rest days per PTO day used, best bang for your buck first"
     },
     "DayHeader": {
       "Mon": "M",

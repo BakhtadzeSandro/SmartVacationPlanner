@@ -23,7 +23,7 @@
       </div>
 
       <div class="vacation-results-actions">
-        <button class="btn-auto-optimize" (click)="autoOptimize.emit()">
+        <button class="btn-auto-optimize" (click)="autoOptimize.emit()" [pTooltip]="'SoloPlanner.Results.AutoOptimizeTooltip' | translate" tooltipPosition="bottom">
           {{ 'SoloPlanner.Results.AutoOptimize' | translate }}
         </button>
         @if (selectedOptions().length > 0) {
@@ -32,10 +32,10 @@
           </button>
         }
         <div class="sort-toggle">
-          <button class="sort-btn" [class.active]="sortMode() === 'rest'" (click)="setSortMode('rest')">
+          <button class="sort-btn" [class.active]="sortMode() === 'rest'" (click)="setSortMode('rest')" [pTooltip]="'SoloPlanner.Results.SortByRestTooltip' | translate" tooltipPosition="bottom">
             {{ 'SoloPlanner.Results.SortByRest' | translate }}
           </button>
-          <button class="sort-btn" [class.active]="sortMode() === 'efficiency'" (click)="setSortMode('efficiency')">
+          <button class="sort-btn" [class.active]="sortMode() === 'efficiency'" (click)="setSortMode('efficiency')" [pTooltip]="'SoloPlanner.Results.SortByEfficiencyTooltip' | translate" tooltipPosition="bottom">
             {{ 'SoloPlanner.Results.SortByEfficiency' | translate }}
           </button>
         </div>
