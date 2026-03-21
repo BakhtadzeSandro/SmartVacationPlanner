@@ -5,7 +5,33 @@
     <form [formGroup]="configForm()!" (ngSubmit)="onSubmit()">
       <div class="form-field">
         <label class="form-label">{{ 'SoloPlanner.Country' | translate }}</label>
-        <p>{{ countryName() }}</p>
+        <div class="country-display">
+          @if (countryCode()) {
+            <img
+              [src]="'https://flagcdn.com/24x18/' + countryCode().toLowerCase() + '.png'"
+              [alt]="countryName()"
+              width="24"
+              height="18"
+            />
+          }
+          <p>{{ countryName() }}</p>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label">{{ 'SoloPlanner.AvailablePtoDays' | translate }}</label>
+        @if (minimumLeaveDays() !== null) {
+          <p>{{ minimumLeaveDays() }} {{ 'SoloPlanner.Days' | translate }}</p>
+          <span class="form-hint">{{ 'SoloPlanner.PtoBudgetHint' | translate }}</span>
+        } @else {
+          <p-inputnumber
+            formControlName="ptoDays"
+            [min]="1"
+            [max]="365"
+            [showButtons]="true"
+            class="input-number"
+          />
+        }
       </div>
 
       <div class="form-field">
@@ -16,17 +42,6 @@
           optionLabel="label"
           optionValue="value"
           class="w-full"
-        />
-      </div>
-
-      <div class="form-field">
-        <label class="form-label">{{ 'SoloPlanner.AvailablePtoDays' | translate }}</label>
-        <p-inputnumber
-          formControlName="ptoDays"
-          [min]="1"
-          [max]="24"
-          [showButtons]="true"
-          class="input-number"
         />
       </div>
 

@@ -31,10 +31,18 @@
             {{ 'SoloPlanner.Results.ClearSelection' | translate }}
           </button>
         }
+        <div class="sort-toggle">
+          <button class="sort-btn" [class.active]="sortMode() === 'rest'" (click)="setSortMode('rest')">
+            {{ 'SoloPlanner.Results.SortByRest' | translate }}
+          </button>
+          <button class="sort-btn" [class.active]="sortMode() === 'efficiency'" (click)="setSortMode('efficiency')">
+            {{ 'SoloPlanner.Results.SortByEfficiency' | translate }}
+          </button>
+        </div>
       </div>
 
       <div class="vacation-results-list">
-        @for (option of results(); track option.startDate + option.endDate) {
+        @for (option of sortedResults(); track option.startDate + option.endDate) {
           <div
             class="vacation-card"
             [class.selected]="isSelected(option)"

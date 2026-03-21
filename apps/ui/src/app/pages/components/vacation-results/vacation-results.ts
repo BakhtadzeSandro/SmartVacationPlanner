@@ -1,4 +1,4 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, computed, input, output, signal } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { doOptionsOverlap, VacationOption } from '../../../core/utils/vacation-optimizer';
 
@@ -20,11 +20,27 @@ export class VacationResults {
   readonly autoOptimize = output<void>();
   readonly clearSelection = output<void>();
 
+  readonly sortMode = signal<'rest' | 'efficiency'>('rest');
+
+  readonly sortedResults = computed(() => {
+    const items = [...this.results()];
+    if (this.sortMode() === 'rest') {
+      items.sort((a, b) => b.totalRestDays - a.totalRestDays || b.efficiency - a.efficiency);
+    } else {
+      items.sort((a, b) => b.efficiency - a.efficiency || b.totalRestDays - a.totalRestDays);
+    }
+    return items;
+  });
+
   readonly budgetPercent = computed(() => {
     const budget = this.ptoBudget();
     if (budget <= 0) return 0;
     return Math.min(100, Math.round((this.totalPtoUsed() / budget) * 100));
   });
+
+  setSortMode(mode: 'rest' | 'efficiency'): void {
+    this.sortMode.set(mode);
+  }
 
   onCardClick(option: VacationOption): void {
     if (this.isDisabled(option)) return;

@@ -107,6 +107,35 @@
   }
 }
 
+.sort-toggle {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.sort-btn {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: var(--text-secondary);
+  background-color: transparent;
+  border: 1px solid var(--border-primary);
+  padding: 5px 12px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+
+  &:hover {
+    border-color: var(--text-secondary);
+    color: var(--text-primary);
+  }
+
+  &.active {
+    color: #fff;
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+  }
+}
+
 .vacation-results-list {
   display: flex;
   gap: 12px;

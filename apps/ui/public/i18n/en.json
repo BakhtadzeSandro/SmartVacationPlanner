@@ -26,6 +26,7 @@
       "Weekend": "Weekend",
       "PTO": "PTO Day"
     },
+    "Days": "Days",
     "PtoBudgetHint": "This is your total PTO budget for the year",
     "Results": {
       "Title": "Vacation Options",
@@ -40,7 +41,9 @@
       "MidWeekHint": "{{count}} more option(s) available if you enable mid-week vacation starts.",
       "PtoBudget": "PTO Budget",
       "AutoOptimize": "Auto-Optimize",
-      "ClearSelection": "Clear selection"
+      "ClearSelection": "Clear selection",
+      "SortByRest": "Most rest days",
+      "SortByEfficiency": "Most efficient"
     },
     "DayHeader": {
       "Mon": "M",

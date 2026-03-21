@@ -6,8 +6,13 @@ import { InputNumber } from 'primeng/inputnumber';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { ButtonModule } from 'primeng/button';
 import { ConfigurationService } from '../../../core/services/configuration.service';
-import { ConfigurationForm, PublicHoliday, SelectOption, VacationSearchParams } from './configuration.model';
-import { switchMap, tap } from 'rxjs';
+import {
+  ConfigurationForm,
+  PublicHoliday,
+  SelectOption,
+  VacationSearchParams,
+} from './configuration.model';
+import { forkJoin, switchMap, tap } from 'rxjs';
 
 const PERIOD_MONTHS: Record<string, number[]> = {
   'all-year': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
@@ -44,6 +49,7 @@ export class Configuration {
 
   countryName = signal<string>('');
   countryCode = signal<string>('');
+  minimumLeaveDays = signal<number | null>(null);
 
   readonly yearChange = output<number>();
   readonly holidaysChange = output<PublicHoliday[]>();
@@ -89,8 +95,7 @@ export class Configuration {
       this.periodFilters = this.periodFilterKeys.map((k) => {
         const months = PERIOD_MONTHS[k] ?? [];
         // Disable if all months in this period are in the past for the selected year
-        const allPast =
-          selectedYear === currentYear && months.every((m) => m < currentMonth);
+        const allPast = selectedYear === currentYear && months.every((m) => m < currentMonth);
         return {
           label: translations[`SoloPlanner.Period.${k}`],
           value: k,
@@ -110,8 +115,16 @@ export class Configuration {
   onSubmit(): void {
     const form = this.configForm();
     if (!form) return;
-    const { year, ptoDays, minPtoDays, maxPtoDays, periodFilter, enableMidWeekStarts } = form.getRawValue();
-    this.searchChange.emit({ year, ptoDays, minPtoDays, maxPtoDays, periodFilter, enableMidWeekStarts });
+    const { year, ptoDays, minPtoDays, maxPtoDays, periodFilter, enableMidWeekStarts } =
+      form.getRawValue();
+    this.searchChange.emit({
+      year,
+      ptoDays,
+      minPtoDays,
+      maxPtoDays,
+      periodFilter,
+      enableMidWeekStarts,
+    });
   }
 
   private getCountryInformation(): void {
@@ -123,10 +136,19 @@ export class Configuration {
         switchMap((response) => {
           this.countryName.set(response.country_name);
           this.countryCode.set(response.country_code);
-          return this.configurationService.getPublicHolidays(currentYear, response.country_code);
+          return forkJoin({
+            holidays: this.configurationService.getPublicHolidays(currentYear, response.country_code),
+            leave: this.configurationService.getMinimumLeave(response.country_name),
+          });
         }),
-        tap((response) => {
-          this.holidaysChange.emit(response);
+        tap(({ holidays, leave }) => {
+          this.holidaysChange.emit(holidays);
+          this.minimumLeaveDays.set(leave.minimumLeaveDays);
+          const form = this.configForm();
+          if (form && leave.minimumLeaveDays !== null) {
+            form.get('ptoDays')!.setValue(leave.minimumLeaveDays);
+            form.get('maxPtoDays')!.setValue(leave.minimumLeaveDays);
+          }
         }),
       )
       .subscribe();
