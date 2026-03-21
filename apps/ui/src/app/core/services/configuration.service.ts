@@ -67,6 +67,7 @@ export class ConfigurationService {
     return name
       .replace(/\[.*?\]/g, '')
       .replace(/\(.*?\)/g, '')
+      .replace(/^the\s+/i, '')
       .trim()
       .toLowerCase();
   }

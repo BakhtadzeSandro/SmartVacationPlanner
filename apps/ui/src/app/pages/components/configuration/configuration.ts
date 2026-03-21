@@ -5,6 +5,7 @@ import { Select } from 'primeng/select';
 import { InputNumber } from 'primeng/inputnumber';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { ButtonModule } from 'primeng/button';
+import { Skeleton } from 'primeng/skeleton';
 import { ConfigurationService } from '../../../core/services/configuration.service';
 import {
   ConfigurationForm,
@@ -12,7 +13,7 @@ import {
   SelectOption,
   VacationSearchParams,
 } from './configuration.model';
-import { forkJoin, switchMap, tap } from 'rxjs';
+import { forkJoin, finalize, switchMap, tap } from 'rxjs';
 
 const PERIOD_MONTHS: Record<string, number[]> = {
   'all-year': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
@@ -38,7 +39,7 @@ const PERIOD_MONTHS: Record<string, number[]> = {
   selector: 'app-configuration',
   templateUrl: './configuration.html',
   styleUrl: './configuration.scss',
-  imports: [ReactiveFormsModule, TranslateModule, Select, InputNumber, ToggleSwitch, ButtonModule],
+  imports: [ReactiveFormsModule, TranslateModule, Select, InputNumber, ToggleSwitch, ButtonModule, Skeleton],
 })
 export class Configuration {
   private readonly fb = inject(FormBuilder);
@@ -50,6 +51,7 @@ export class Configuration {
   countryName = signal<string>('');
   countryCode = signal<string>('');
   minimumLeaveDays = signal<number | null>(null);
+  loading = signal(true);
 
   readonly yearChange = output<number>();
   readonly holidaysChange = output<PublicHoliday[]>();
@@ -150,6 +152,7 @@ export class Configuration {
             form.get('maxPtoDays')!.setValue(leave.minimumLeaveDays);
           }
         }),
+        finalize(() => this.loading.set(false)),
       )
       .subscribe();
   }

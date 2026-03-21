@@ -1,97 +1,108 @@
 <div class="configuration-container">
   <h4 class="configuration-title">{{ 'SoloPlanner.Configuration' | translate }}</h4>
 
-  <div class="configuration-form">
-    <form [formGroup]="configForm()!" (ngSubmit)="onSubmit()">
-      <div class="form-field">
-        <label class="form-label">{{ 'SoloPlanner.Country' | translate }}</label>
-        <div class="country-display">
-          @if (countryCode()) {
-            <img
-              [src]="'https://flagcdn.com/24x18/' + countryCode().toLowerCase() + '.png'"
-              [alt]="countryName()"
-              width="24"
-              height="18"
+  @if (loading()) {
+    <div class="configuration-skeleton">
+      @for (_ of [1, 2, 3, 4, 5, 6]; track $index) {
+        <div class="skeleton-field">
+          <p-skeleton width="40%" height="14px" />
+          <p-skeleton width="100%" height="40px" />
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="configuration-form">
+      <form [formGroup]="configForm()!" (ngSubmit)="onSubmit()">
+        <div class="form-field">
+          <label class="form-label">{{ 'SoloPlanner.Country' | translate }}</label>
+          <div class="country-display">
+            @if (countryCode()) {
+              <img
+                [src]="'https://flagcdn.com/24x18/' + countryCode().toLowerCase() + '.png'"
+                [alt]="countryName()"
+                width="24"
+                height="18"
+              />
+            }
+            <p>{{ countryName() }}</p>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">{{ 'SoloPlanner.AvailablePtoDays' | translate }}</label>
+          @if (minimumLeaveDays() !== null) {
+            <p>{{ minimumLeaveDays() }} {{ 'SoloPlanner.Days' | translate }}</p>
+            <span class="form-hint">{{ 'SoloPlanner.PtoBudgetHint' | translate }}</span>
+          } @else {
+            <p-inputnumber
+              formControlName="ptoDays"
+              [min]="1"
+              [max]="365"
+              [showButtons]="true"
+              class="input-number"
             />
           }
-          <p>{{ countryName() }}</p>
         </div>
-      </div>
 
-      <div class="form-field">
-        <label class="form-label">{{ 'SoloPlanner.AvailablePtoDays' | translate }}</label>
-        @if (minimumLeaveDays() !== null) {
-          <p>{{ minimumLeaveDays() }} {{ 'SoloPlanner.Days' | translate }}</p>
-          <span class="form-hint">{{ 'SoloPlanner.PtoBudgetHint' | translate }}</span>
-        } @else {
+        <div class="form-field">
+          <label class="form-label">{{ 'SoloPlanner.Year' | translate }}</label>
+          <p-select
+            formControlName="year"
+            [options]="years"
+            optionLabel="label"
+            optionValue="value"
+            class="w-full"
+          />
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">{{ 'SoloPlanner.MinPtoDays' | translate }}</label>
           <p-inputnumber
-            formControlName="ptoDays"
+            formControlName="minPtoDays"
             [min]="1"
-            [max]="365"
+            [max]="configForm()!.get('maxPtoDays')!.value"
             [showButtons]="true"
             class="input-number"
           />
-        }
-      </div>
+        </div>
 
-      <div class="form-field">
-        <label class="form-label">{{ 'SoloPlanner.Year' | translate }}</label>
-        <p-select
-          formControlName="year"
-          [options]="years"
-          optionLabel="label"
-          optionValue="value"
-          class="w-full"
-        />
-      </div>
+        <div class="form-field">
+          <label class="form-label">{{ 'SoloPlanner.MaxPtoDays' | translate }}</label>
+          <p-inputnumber
+            formControlName="maxPtoDays"
+            [min]="configForm()!.get('minPtoDays')!.value"
+            [max]="configForm()!.get('ptoDays')!.value"
+            [showButtons]="true"
+            class="input-number"
+          />
+        </div>
 
-      <div class="form-field">
-        <label class="form-label">{{ 'SoloPlanner.MinPtoDays' | translate }}</label>
-        <p-inputnumber
-          formControlName="minPtoDays"
-          [min]="1"
-          [max]="configForm()!.get('maxPtoDays')!.value"
-          [showButtons]="true"
-          class="input-number"
-        />
-      </div>
+        <div class="form-field">
+          <label class="form-label">{{ 'SoloPlanner.EnableMidWeekStarts' | translate }}</label>
+          <p-toggleswitch formControlName="enableMidWeekStarts" />
+        </div>
 
-      <div class="form-field">
-        <label class="form-label">{{ 'SoloPlanner.MaxPtoDays' | translate }}</label>
-        <p-inputnumber
-          formControlName="maxPtoDays"
-          [min]="configForm()!.get('minPtoDays')!.value"
-          [max]="configForm()!.get('ptoDays')!.value"
-          [showButtons]="true"
-          class="input-number"
-        />
-      </div>
+        <div class="form-field">
+          <label class="form-label">{{ 'SoloPlanner.PeriodFilter' | translate }}</label>
+          <p-select
+            formControlName="periodFilter"
+            [options]="periodFilters"
+            optionLabel="label"
+            optionValue="value"
+            optionDisabled="disabled"
+            class="w-full"
+          />
+        </div>
 
-      <div class="form-field">
-        <label class="form-label">{{ 'SoloPlanner.EnableMidWeekStarts' | translate }}</label>
-        <p-toggleswitch formControlName="enableMidWeekStarts" />
-      </div>
-
-      <div class="form-field">
-        <label class="form-label">{{ 'SoloPlanner.PeriodFilter' | translate }}</label>
-        <p-select
-          formControlName="periodFilter"
-          [options]="periodFilters"
-          optionLabel="label"
-          optionValue="value"
-          optionDisabled="disabled"
-          class="w-full"
-        />
-      </div>
-
-      <button
-        type="submit"
-        pButton
-        [label]="'SoloPlanner.FindBestVacation' | translate"
-        icon="pi pi-search"
-        class="submit-button"
-        severity="primary"
-      ></button>
-    </form>
-  </div>
+        <button
+          type="submit"
+          pButton
+          [label]="'SoloPlanner.FindBestVacation' | translate"
+          icon="pi pi-search"
+          class="submit-button"
+          severity="primary"
+        ></button>
+      </form>
+    </div>
+  }
 </div>

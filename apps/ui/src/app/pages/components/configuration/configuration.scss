@@ -54,3 +54,15 @@
 .submit-button {
   width: 100%;
 }
+
+.configuration-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.skeleton-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
