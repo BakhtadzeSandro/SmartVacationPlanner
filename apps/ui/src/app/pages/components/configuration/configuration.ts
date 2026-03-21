@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit, output, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, input, output, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -14,7 +14,7 @@ import {
   SelectOption,
   VacationSearchParams,
 } from './configuration.model';
-import { EMPTY, catchError, forkJoin, finalize, switchMap, tap } from 'rxjs';
+import { EMPTY, catchError, debounceTime, forkJoin, finalize, merge, switchMap, tap } from 'rxjs';
 
 const PERIOD_MONTHS: Record<string, number[]> = {
   'all-year': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
@@ -49,6 +49,7 @@ export class Configuration implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
 
   readonly configForm = this.buildForm();
+  readonly hasSearched = input(false);
 
   readonly countryName = signal<string>('');
   readonly countryCode = signal<string>('');
@@ -223,6 +224,25 @@ export class Configuration implements OnInit {
       });
   }
 
+  private listenToAutoSearch(): void {
+    const { minPtoDays, maxPtoDays, ptoDays, periodFilter, enableMidWeekStarts } =
+      this.configForm.controls;
+
+    merge(
+      minPtoDays.valueChanges,
+      maxPtoDays.valueChanges,
+      ptoDays.valueChanges,
+      periodFilter.valueChanges,
+      enableMidWeekStarts.valueChanges,
+    )
+      .pipe(debounceTime(400), takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        if (this.hasSearched()) {
+          this.onSubmit();
+        }
+      });
+  }
+
   private refreshHolidays(year: number): void {
     const code = this.countryCode();
     if (!code) return;
@@ -242,5 +262,6 @@ export class Configuration implements OnInit {
     this.loadPeriodFilters();
     this.listenToYearChanges();
     this.listenToPtoChanges();
+    this.listenToAutoSearch();
   }
 }

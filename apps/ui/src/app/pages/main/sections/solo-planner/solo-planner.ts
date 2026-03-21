@@ -27,6 +27,8 @@ export class SoloPlanner {
   readonly hasSearched = signal(false);
   readonly midWeekFilteredCount = signal(0);
 
+  private lastSearchParams: VacationSearchParams | null = null;
+
   readonly totalPtoUsed = computed(() =>
     this.selectedOptions().reduce((sum, o) => sum + o.ptoDaysUsed, 0),
   );
@@ -37,19 +39,24 @@ export class SoloPlanner {
 
   onYearChange(year: number): void {
     this.selectedYear.set(year);
-    this.vacationResults.set([]);
     this.selectedOptions.set([]);
-    this.hasSearched.set(false);
   }
 
   onHolidaysChange(holidays: PublicHoliday[]): void {
     this.holidays.set(holidays);
-    this.vacationResults.set([]);
     this.selectedOptions.set([]);
-    this.hasSearched.set(false);
+
+    if (this.hasSearched() && this.lastSearchParams) {
+      this.runSearch({ ...this.lastSearchParams, year: this.selectedYear() });
+    }
   }
 
   onSearch(params: VacationSearchParams): void {
+    this.lastSearchParams = params;
+    this.runSearch(params);
+  }
+
+  private runSearch(params: VacationSearchParams): void {
     const results = findOptimalVacations(
       params.year,
       this.holidays(),

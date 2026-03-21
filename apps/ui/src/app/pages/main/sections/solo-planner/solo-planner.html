@@ -2,6 +2,7 @@
   <div class="sidebar-column">
     <aside class="sidebar">
       <app-configuration
+        [hasSearched]="hasSearched()"
         (yearChange)="onYearChange($event)"
         (holidaysChange)="onHolidaysChange($event)"
         (searchChange)="onSearch($event)"

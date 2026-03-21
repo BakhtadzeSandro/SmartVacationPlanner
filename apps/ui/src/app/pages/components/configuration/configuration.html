@@ -107,14 +107,16 @@
           />
         </div>
 
-        <button
-          type="submit"
-          pButton
-          [label]="'SoloPlanner.FindBestVacation' | translate"
-          icon="pi pi-search"
-          class="submit-button"
-          severity="primary"
-        ></button>
+        @if (!hasSearched()) {
+          <button
+            type="submit"
+            pButton
+            [label]="'SoloPlanner.FindBestVacation' | translate"
+            icon="pi pi-search"
+            class="submit-button"
+            severity="primary"
+          ></button>
+        }
       </form>
     </div>
   }
