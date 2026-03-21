@@ -16,7 +16,9 @@ export class ConfigurationService {
   }
 
   getPublicHolidays(year: number, countryCode: string) {
-    return this.http.get<PublicHoliday[]>(`https://date.nager.at/api/v3/PublicHolidays/${year}/${countryCode}`);
+    return this.http.get<PublicHoliday[]>(
+      `https://date.nager.at/api/v3/PublicHolidays/${year}/${countryCode}`,
+    );
   }
 
   getMinimumLeave(countryName: string): Observable<{ minimumLeaveDays: number | null }> {

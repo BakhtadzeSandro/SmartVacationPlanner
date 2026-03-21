@@ -54,6 +54,10 @@
       "Sat": "S",
       "Sun": "S"
     },
+    "Error": {
+      "LoadFailed": "Could not load your country and holiday information.",
+      "Retry": "Try Again"
+    },
     "Period": {
       "all-year": "All Year",
       "spring": "Spring (Mar-May)",

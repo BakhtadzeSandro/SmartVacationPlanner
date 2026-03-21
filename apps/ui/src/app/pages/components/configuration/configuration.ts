@@ -13,7 +13,7 @@ import {
   SelectOption,
   VacationSearchParams,
 } from './configuration.model';
-import { forkJoin, finalize, switchMap, tap } from 'rxjs';
+import { EMPTY, catchError, forkJoin, finalize, switchMap, tap } from 'rxjs';
 
 const PERIOD_MONTHS: Record<string, number[]> = {
   'all-year': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
@@ -52,6 +52,7 @@ export class Configuration {
   countryCode = signal<string>('');
   minimumLeaveDays = signal<number | null>(null);
   loading = signal(true);
+  error = signal(false);
 
   readonly yearChange = output<number>();
   readonly holidaysChange = output<PublicHoliday[]>();
@@ -132,6 +133,8 @@ export class Configuration {
   private getCountryInformation(): void {
     const currentYear = this.configForm()?.get('year')?.value;
     if (!currentYear) return;
+    this.loading.set(true);
+    this.error.set(false);
     this.configurationService
       .getConfiguration()
       .pipe(
@@ -152,9 +155,17 @@ export class Configuration {
             form.get('maxPtoDays')!.setValue(leave.minimumLeaveDays);
           }
         }),
+        catchError(() => {
+          this.error.set(true);
+          return EMPTY;
+        }),
         finalize(() => this.loading.set(false)),
       )
       .subscribe();
+  }
+
+  retry(): void {
+    this.getCountryInformation();
   }
 
   private buildForm(): void {
@@ -215,9 +226,12 @@ export class Configuration {
   private refreshHolidays(year: number): void {
     const code = this.countryCode();
     if (!code) return;
-    this.configurationService.getPublicHolidays(year, code).subscribe((response) => {
-      this.holidaysChange.emit(response);
-    });
+    this.configurationService
+      .getPublicHolidays(year, code)
+      .pipe(catchError(() => EMPTY))
+      .subscribe((response) => {
+        this.holidaysChange.emit(response);
+      });
   }
 
   listenToLanguageChanges() {

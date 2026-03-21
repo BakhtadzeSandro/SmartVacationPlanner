@@ -66,3 +66,23 @@
   flex-direction: column;
   gap: 6px;
 }
+
+.configuration-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 16px;
+}
+
+.error-icon {
+  font-size: 2rem;
+  color: var(--text-error);
+}
+
+.error-message {
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  text-align: center;
+  max-width: 280px;
+}

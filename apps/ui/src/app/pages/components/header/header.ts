@@ -37,13 +37,13 @@ export class Header {
       navigateTo: 'solo-planner',
       disabled: false,
     },
-    {
-      value: 'group-planner',
-      label: 'Header.GroupPlanner',
-      navigateTo: 'group-planner',
-      disabled: true,
-    },
-    { value: 'my-groups', label: 'Header.MyGroups', navigateTo: 'my-groups', disabled: true },
+    // {
+    //   value: 'group-planner',
+    //   label: 'Header.GroupPlanner',
+    //   navigateTo: 'group-planner',
+    //   disabled: true,
+    // },
+    // { value: 'my-groups', label: 'Header.MyGroups', navigateTo: 'my-groups', disabled: true },
   ];
 
   constructor(private readonly router: Router) {}

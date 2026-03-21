@@ -10,6 +10,19 @@
         </div>
       }
     </div>
+  } @else if (error()) {
+    <div class="configuration-error">
+      <i class="pi pi-exclamation-circle error-icon"></i>
+      <p class="error-message">{{ 'SoloPlanner.Error.LoadFailed' | translate }}</p>
+      <button
+        type="button"
+        pButton
+        [label]="'SoloPlanner.Error.Retry' | translate"
+        icon="pi pi-refresh"
+        (click)="retry()"
+        severity="primary"
+      ></button>
+    </div>
   } @else {
     <div class="configuration-form">
       <form [formGroup]="configForm()!" (ngSubmit)="onSubmit()">
