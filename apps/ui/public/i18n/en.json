@@ -18,7 +18,7 @@
     "PeriodFilter": "Period Filter",
     "FindBestVacation": "Find Best Vacation Options",
     "Note": "Note",
-    "NoteText": "We analyze public holidays and weekends to maximize your time off while minimizing PTO usage.",
+    "NoteText": "We analyze public holidays and weekends to maximize your time off while minimizing PTO usage. We automatically detect your country, fetch its public holidays, and look up the minimum annual leave to pre-fill your PTO budget. From there, we find the best vacation windows by connecting holidays and weekends into longer breaks — so you get the most time off with the fewest PTO days.",
     "CalendarOverview": "Calendar Overview",
     "CalendarOverviewSubtitle": "Public holidays and weekends highlighted",
     "Legend": {

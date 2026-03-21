@@ -58,10 +58,10 @@ export class Configuration {
   readonly holidaysChange = output<PublicHoliday[]>();
   readonly searchChange = output<VacationSearchParams>();
 
-  readonly years: SelectOption[] = [
-    { label: '2026', value: 2026 },
-    { label: '2027', value: 2027 },
-  ];
+  readonly years: SelectOption[] = (() => {
+    const current = new Date().getFullYear();
+    return [current, current + 1].map((y) => ({ label: String(y), value: y }));
+  })();
 
   periodFilters: SelectOption[] = [];
 

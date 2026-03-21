@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <circle cx="32" cy="32" r="30" fill="#e2e8f0"/>
+  <g transform="translate(32, 36)">
+    <!-- trunk -->
+    <path d="M-1 0 C0 8, 2 14, 3 22 L-1 22 C-1 14, -2 8, -1 0Z" fill="#92400e"/>
+    <!-- left fronds -->
+    <path d="M0-2 C-8-10,-20-13,-24-9 C-18-11,-8-8,0-2Z" fill="#22c55e"/>
+    <path d="M0-4 C-10-14,-22-16,-26-12 C-20-14,-8-10,0-4Z" fill="#16a34a"/>
+    <path d="M0-4 C-6-16,-13-24,-18-22 C-14-22,-6-14,0-4Z" fill="#15803d"/>
+    <!-- right fronds -->
+    <path d="M0-2 C8-10,20-13,24-9 C18-11,8-8,0-2Z" fill="#22c55e"/>
+    <path d="M0-4 C10-14,22-16,26-12 C20-14,8-10,0-4Z" fill="#16a34a"/>
+    <path d="M0-4 C6-16,13-24,18-22 C14-22,6-14,0-4Z" fill="#15803d"/>
+  </g>
+</svg>
