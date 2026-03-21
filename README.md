@@ -63,7 +63,3 @@ apps/
 4. Select multiple vacations — overlapping or over-budget options are automatically disabled
 5. Auto-optimize runs a knapsack algorithm to find the best combination within your budget
 6. Export your plan as an `.ics` calendar file
-
-## License
-
-MIT
