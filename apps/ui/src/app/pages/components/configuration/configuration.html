@@ -63,11 +63,15 @@
             [min]="1"
             [max]="50"
             [showButtons]="true"
+            [allowEmpty]="false"
             class="input-number"
           />
           @if (minimumLeaveDays() !== null) {
             <span class="form-hint">
-              {{ 'SoloPlanner.MinimumLeaveHint' | translate: { country: countryName(), days: minimumLeaveDays() } }}
+              {{
+                'SoloPlanner.MinimumLeaveHint'
+                  | translate: { country: countryName(), days: minimumLeaveDays() }
+              }}
             </span>
           } @else if (countryName()) {
             <span class="form-hint form-hint-warn">
@@ -94,6 +98,7 @@
             [min]="1"
             [max]="configForm.controls.maxPtoDays.value"
             [showButtons]="true"
+            [allowEmpty]="false"
             class="input-number"
           />
         </div>
@@ -105,6 +110,8 @@
             [min]="configForm.controls.minPtoDays.value"
             [max]="configForm.controls.ptoDays.value"
             [showButtons]="true"
+            [min]="1"
+            [allowEmpty]="false"
             class="input-number"
           />
         </div>

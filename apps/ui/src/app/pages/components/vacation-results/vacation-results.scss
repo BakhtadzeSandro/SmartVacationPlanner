@@ -85,8 +85,10 @@
   cursor: pointer;
   transition: background-color 0.2s;
 
-  &:hover {
-    background-color: var(--color-primary-hover);
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--color-primary-hover);
+    }
   }
 }
 
@@ -104,8 +106,10 @@
   cursor: pointer;
   transition: background-color 0.2s;
 
-  &:hover {
-    background-color: var(--color-success-hover);
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--color-success-hover);
+    }
   }
 }
 
@@ -120,9 +124,11 @@
   cursor: pointer;
   transition: border-color 0.2s, color 0.2s;
 
-  &:hover {
-    border-color: var(--text-secondary);
-    color: var(--text-primary);
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--text-secondary);
+      color: var(--text-primary);
+    }
   }
 }
 
@@ -143,9 +149,11 @@
   cursor: pointer;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 
-  &:hover {
-    border-color: var(--text-secondary);
-    color: var(--text-primary);
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--text-secondary);
+      color: var(--text-primary);
+    }
   }
 
   &.active {
@@ -191,8 +199,10 @@
     padding: 12px;
   }
 
-  &:hover {
-    border-color: var(--color-primary);
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--color-primary);
+    }
   }
 
   &.selected {
