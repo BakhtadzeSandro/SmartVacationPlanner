@@ -16,6 +16,7 @@ export class VacationResults {
   readonly totalPtoUsed = input<number>(0);
   readonly hasSearched = input(false);
   readonly midWeekFilteredCount = input(0);
+  readonly allHolidaysOnWeekends = input(false);
 
   readonly optionToggle = output<VacationOption>();
   readonly autoOptimize = output<void>();

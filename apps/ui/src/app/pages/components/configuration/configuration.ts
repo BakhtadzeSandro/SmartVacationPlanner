@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject, OnInit, input, output, signal } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Select } from 'primeng/select';
@@ -10,6 +10,7 @@ import { Skeleton } from 'primeng/skeleton';
 import { ConfigurationService } from '../../../core/services/configuration.service';
 import {
   ConfigurationForm,
+  CountryOption,
   PublicHoliday,
   SelectOption,
   VacationSearchParams,
@@ -40,7 +41,7 @@ const PERIOD_MONTHS: Record<string, number[]> = {
   selector: 'app-configuration',
   templateUrl: './configuration.html',
   styleUrl: './configuration.scss',
-  imports: [ReactiveFormsModule, TranslateModule, Select, InputNumber, ToggleSwitch, ButtonModule, Skeleton],
+  imports: [FormsModule, ReactiveFormsModule, TranslateModule, Select, InputNumber, ToggleSwitch, ButtonModule, Skeleton],
 })
 export class Configuration implements OnInit {
   private readonly fb = inject(FormBuilder);
@@ -56,6 +57,8 @@ export class Configuration implements OnInit {
   readonly minimumLeaveDays = signal<number | null>(null);
   readonly loading = signal(true);
   readonly error = signal(false);
+  readonly holidaysLoading = signal(false);
+  readonly availableCountries = signal<CountryOption[]>([]);
 
   readonly yearChange = output<number>();
   readonly holidaysChange = output<PublicHoliday[]>();
@@ -131,22 +134,22 @@ export class Configuration implements OnInit {
     });
   }
 
-  private getCountryInformation(): void {
+  onCountryChange(country: CountryOption): void {
+    if (!country) return;
+    this.countryCode.set(country.countryCode);
+    this.countryName.set(country.name);
+    this.loadCountryData(country.countryCode, country.name);
+  }
+
+  private loadCountryData(countryCode: string, countryName: string): void {
     const currentYear = this.configForm.controls.year.value;
-    if (!currentYear) return;
-    this.loading.set(true);
-    this.error.set(false);
-    this.configurationService
-      .getConfiguration()
+    this.holidaysLoading.set(true);
+
+    forkJoin({
+      holidays: this.configurationService.getPublicHolidays(currentYear, countryCode),
+      leave: this.configurationService.getMinimumLeave(countryName),
+    })
       .pipe(
-        switchMap((response) => {
-          this.countryName.set(response.country_name);
-          this.countryCode.set(response.country_code);
-          return forkJoin({
-            holidays: this.configurationService.getPublicHolidays(currentYear, response.country_code),
-            leave: this.configurationService.getMinimumLeave(response.country_name),
-          });
-        }),
         tap(({ holidays, leave }) => {
           this.holidaysChange.emit(holidays);
           this.minimumLeaveDays.set(leave.minimumLeaveDays);
@@ -154,6 +157,60 @@ export class Configuration implements OnInit {
             this.configForm.controls.ptoDays.setValue(leave.minimumLeaveDays);
             this.configForm.controls.maxPtoDays.setValue(leave.minimumLeaveDays);
           }
+        }),
+        catchError(() => {
+          this.error.set(true);
+          return EMPTY;
+        }),
+        finalize(() => this.holidaysLoading.set(false)),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe();
+  }
+
+  private getCountryInformation(): void {
+    const currentYear = this.configForm.controls.year.value;
+    if (!currentYear) return;
+    this.loading.set(true);
+    this.error.set(false);
+
+    forkJoin({
+      countries: this.configurationService.getAvailableCountries(),
+      ipDetect: this.configurationService.getConfiguration().pipe(
+        catchError(() => {
+          // ipapi.co failed — return null so country list still loads
+          return [null];
+        }),
+      ),
+    })
+      .pipe(
+        switchMap(({ countries, ipDetect }) => {
+          this.availableCountries.set(countries);
+
+          if (ipDetect) {
+            this.countryName.set(ipDetect.country_name);
+            this.countryCode.set(ipDetect.country_code);
+          }
+
+          const code = ipDetect?.country_code;
+          if (!code) {
+            // No auto-detect — just show country dropdown, user picks manually
+            return EMPTY;
+          }
+
+          return forkJoin({
+            holidays: this.configurationService.getPublicHolidays(currentYear, code),
+            leave: this.configurationService.getMinimumLeave(ipDetect!.country_name),
+          }).pipe(
+            tap(({ holidays, leave }) => {
+              this.holidaysChange.emit(holidays);
+              this.minimumLeaveDays.set(leave.minimumLeaveDays);
+              if (leave.minimumLeaveDays !== null) {
+                this.configForm.controls.ptoDays.setValue(leave.minimumLeaveDays);
+                this.configForm.controls.maxPtoDays.setValue(leave.minimumLeaveDays);
+              }
+            }),
+          );
         }),
         catchError(() => {
           this.error.set(true);
@@ -173,7 +230,7 @@ export class Configuration implements OnInit {
     const fb = this.fb.nonNullable;
     return fb.group({
       year: fb.control<number>(new Date().getFullYear(), [Validators.required]),
-      ptoDays: fb.control<number>(10, [Validators.required, Validators.min(1), Validators.max(365)]),
+      ptoDays: fb.control<number>(10, [Validators.required, Validators.min(1), Validators.max(50)]),
       minPtoDays: fb.control<number>(1, [Validators.required, Validators.min(1)]),
       maxPtoDays: fb.control<number>(10, [Validators.required, Validators.min(1)]),
       periodFilter: fb.control<string>('all-year'),
@@ -246,10 +303,15 @@ export class Configuration implements OnInit {
   private refreshHolidays(year: number): void {
     const code = this.countryCode();
     if (!code) return;
+    this.holidaysLoading.set(true);
     this.configurationService
       .getPublicHolidays(year, code)
       .pipe(
-        catchError(() => EMPTY),
+        catchError(() => {
+          this.error.set(true);
+          return EMPTY;
+        }),
+        finalize(() => this.holidaysLoading.set(false)),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((response) => {

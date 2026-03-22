@@ -38,6 +38,7 @@
       "Efficiency": "efficiency",
       "Holidays": "Holidays",
       "NoResults": "No vacation options found for the selected period and PTO days.",
+      "NoResultsWeekendHolidays": "Plot twist: all your public holidays fall on weekends this period. The calendar gods owe you one.",
       "MidWeekHint": "{{count}} more option(s) available if you enable mid-week vacation starts.",
       "PtoBudget": "PTO Budget",
       "AutoOptimize": "Auto-Optimize",
@@ -59,8 +60,13 @@
       "Sat": "S",
       "Sun": "S"
     },
+    "SelectCountry": "Select a country",
+    "MinimumLeaveHint": "Minimum for {{country}}: {{days}} days",
+    "MinimumLeaveUnavailable": "Could not determine minimum leave for {{country}}. Enter your PTO manually.",
+    "CountryChangeHint": "Auto-detected. Change if incorrect.",
     "Error": {
       "LoadFailed": "Could not load your country and holiday information.",
+      "HolidaysFailed": "Could not load holidays. Please try again.",
       "Retry": "Try Again"
     },
     "Period": {

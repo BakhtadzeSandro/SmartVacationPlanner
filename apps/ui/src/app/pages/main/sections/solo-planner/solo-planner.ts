@@ -26,6 +26,7 @@ export class SoloPlanner {
   readonly ptoBudget = signal<number>(0);
   readonly hasSearched = signal(false);
   readonly midWeekFilteredCount = signal(0);
+  readonly allHolidaysOnWeekends = signal(false);
 
   private lastSearchParams: VacationSearchParams | null = null;
 
@@ -40,6 +41,7 @@ export class SoloPlanner {
   onYearChange(year: number): void {
     this.selectedYear.set(year);
     this.selectedOptions.set([]);
+    this.vacationResults.set([]);
   }
 
   onHolidaysChange(holidays: PublicHoliday[]): void {
@@ -80,6 +82,23 @@ export class SoloPlanner {
     this.selectedOptions.set([]);
     this.ptoBudget.set(params.ptoDays);
     this.hasSearched.set(true);
+
+    if (filtered.length === 0) {
+      const holidays = this.holidays();
+      const periodHolidays = holidays.filter((h) => {
+        const d = new Date(h.date + 'T00:00:00');
+        const month = d.getMonth();
+        return !params.periodFilter || params.periodFilter === 'all-year' || this.getMonthsForPeriod(params.periodFilter).includes(month);
+      });
+      const hasHolidays = periodHolidays.length > 0;
+      const allOnWeekends = hasHolidays && periodHolidays.every((h) => {
+        const dow = new Date(h.date + 'T00:00:00').getDay();
+        return dow === 0 || dow === 6;
+      });
+      this.allHolidaysOnWeekends.set(allOnWeekends);
+    } else {
+      this.allHolidaysOnWeekends.set(false);
+    }
   }
 
   onToggleOption(option: VacationOption): void {
@@ -112,5 +131,15 @@ export class SoloPlanner {
 
   onExportCalendar(): void {
     downloadIcs(generateIcs(this.selectedOptions()));
+  }
+
+  private getMonthsForPeriod(period: string): number[] {
+    const map: Record<string, number[]> = {
+      'all-year': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+      spring: [2, 3, 4], summer: [5, 6, 7], fall: [8, 9, 10], winter: [11, 0, 1],
+      January: [0], February: [1], March: [2], April: [3], May: [4], June: [5],
+      July: [6], August: [7], September: [8], October: [9], November: [10], December: [11],
+    };
+    return map[period] ?? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
   }
 }

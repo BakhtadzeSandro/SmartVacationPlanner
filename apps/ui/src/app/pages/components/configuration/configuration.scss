@@ -39,16 +39,29 @@
 .form-hint {
   font-size: $font-size-xs;
   color: var(--text-hint);
+
+  &-warn {
+    color: var(--text-warning, #e2a93b);
+  }
 }
 
 .input-number ::ng-deep .p-inputnumber-input {
   width: 100%;
 }
 
-.country-display {
+.country-select-wrapper {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.country-flag {
+  flex-shrink: 0;
+}
+
+.country-select {
+  flex: 1;
+  min-width: 0;
 }
 
 .submit-button {

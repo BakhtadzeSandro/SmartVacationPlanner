@@ -27,6 +27,11 @@ export interface ConfigurationForm {
   enableMidWeekStarts: FormControl<boolean>;
 }
 
+export interface CountryOption {
+  countryCode: string;
+  name: string;
+}
+
 export interface VacationSearchParams {
   year: number;
   ptoDays: number;

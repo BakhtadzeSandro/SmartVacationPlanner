@@ -172,18 +172,15 @@ export function findOptimalVacations(
         }
       }
 
-      // Collect holidays included and count working weekday offs
+      // Collect only weekday holidays (weekend holidays don't save PTO)
       const holidaysIncluded: { date: string; name: string }[] = [];
-      let weekdayHolidays = 0;
       for (let dd = new Date(vacStart); dd <= vacEnd; dd = addDays(dd, 1)) {
         const ds = formatDate(dd);
-        if (holidaySet.has(ds)) {
+        if (holidaySet.has(ds) && isWeekday(dd)) {
           holidaysIncluded.push({ date: ds, name: holidayNameMap.get(ds) ?? '' });
-          if (isWeekday(dd)) {
-            weekdayHolidays++;
-          }
         }
       }
+      const weekdayHolidays = holidaysIncluded.length;
 
       // totalDaysOff = working weekdays off only (PTO + weekday holidays)
       const totalDaysOff = ptoUsed + weekdayHolidays;

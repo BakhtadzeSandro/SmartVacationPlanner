@@ -10,7 +10,7 @@
         </div>
       }
     </div>
-  } @else if (error()) {
+  } @else if (error() && availableCountries().length === 0) {
     <div class="configuration-error">
       <i class="pi pi-exclamation-circle error-icon"></i>
       <p class="error-message">{{ 'SoloPlanner.Error.LoadFailed' | translate }}</p>
@@ -28,32 +28,51 @@
       <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
         <div class="form-field">
           <label class="form-label">{{ 'SoloPlanner.Country' | translate }}</label>
-          <div class="country-display">
+          <div class="country-select-wrapper">
             @if (countryCode()) {
               <img
+                class="country-flag"
                 [src]="'https://flagcdn.com/24x18/' + countryCode().toLowerCase() + '.png'"
                 [alt]="countryName()"
                 width="24"
                 height="18"
               />
             }
-            <p>{{ countryName() }}</p>
+            <p-select
+              [options]="availableCountries()"
+              optionLabel="name"
+              [filter]="true"
+              filterBy="name"
+              [placeholder]="'SoloPlanner.SelectCountry' | translate"
+              [ngModel]="{ countryCode: countryCode(), name: countryName() }"
+              [ngModelOptions]="{ standalone: true }"
+              (onChange)="onCountryChange($event.value)"
+              [dataKey]="'countryCode'"
+              class="country-select"
+            />
           </div>
+          @if (countryCode()) {
+            <span class="form-hint">{{ 'SoloPlanner.CountryChangeHint' | translate }}</span>
+          }
         </div>
 
         <div class="form-field">
           <label class="form-label">{{ 'SoloPlanner.AvailablePtoDays' | translate }}</label>
+          <p-inputnumber
+            formControlName="ptoDays"
+            [min]="1"
+            [max]="50"
+            [showButtons]="true"
+            class="input-number"
+          />
           @if (minimumLeaveDays() !== null) {
-            <p>{{ minimumLeaveDays() }} {{ 'SoloPlanner.Days' | translate }}</p>
-            <span class="form-hint">{{ 'SoloPlanner.PtoBudgetHint' | translate }}</span>
-          } @else {
-            <p-inputnumber
-              formControlName="ptoDays"
-              [min]="1"
-              [max]="365"
-              [showButtons]="true"
-              class="input-number"
-            />
+            <span class="form-hint">
+              {{ 'SoloPlanner.MinimumLeaveHint' | translate: { country: countryName(), days: minimumLeaveDays() } }}
+            </span>
+          } @else if (countryName()) {
+            <span class="form-hint form-hint-warn">
+              {{ 'SoloPlanner.MinimumLeaveUnavailable' | translate: { country: countryName() } }}
+            </span>
           }
         </div>
 
@@ -103,6 +122,8 @@
             optionLabel="label"
             optionValue="value"
             optionDisabled="disabled"
+            [filter]="true"
+            filterBy="label"
             class="w-full"
           />
         </div>

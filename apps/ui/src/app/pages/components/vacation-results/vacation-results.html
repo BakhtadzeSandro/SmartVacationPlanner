@@ -91,7 +91,11 @@
         }
       </div>
     } @else {
-      <p class="no-results">{{ 'SoloPlanner.Results.NoResults' | translate }}</p>
+      @if (allHolidaysOnWeekends()) {
+        <p class="no-results">{{ 'SoloPlanner.Results.NoResultsWeekendHolidays' | translate }}</p>
+      } @else {
+        <p class="no-results">{{ 'SoloPlanner.Results.NoResults' | translate }}</p>
+      }
       @if (midWeekFilteredCount() > 0) {
         <p class="mid-week-hint">{{ 'SoloPlanner.Results.MidWeekHint' | translate:{ count: midWeekFilteredCount() } }}</p>
       }

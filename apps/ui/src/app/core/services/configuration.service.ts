@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, of, map, catchError } from 'rxjs';
-import { PublicHoliday } from '../../pages/components/configuration/configuration.model';
+import { Observable, of, map, tap, catchError } from 'rxjs';
+import { CountryOption, PublicHoliday } from '../../pages/components/configuration/configuration.model';
 
 const WIKIPEDIA_API_URL =
   'https://en.wikipedia.org/w/api.php?action=parse&page=List_of_minimum_annual_leave_by_country&prop=text&format=json&origin=*';
@@ -10,9 +10,22 @@ const WIKIPEDIA_API_URL =
 export class ConfigurationService {
   private readonly http = inject(HttpClient);
   private leaveCache: Map<string, number> | null = null;
+  private countriesCache: CountryOption[] | null = null;
 
   getConfiguration<T extends { country_name: string; country_code: string }>() {
     return this.http.get<T>('https://ipapi.co/json/');
+  }
+
+  getAvailableCountries(): Observable<CountryOption[]> {
+    if (this.countriesCache) {
+      return of(this.countriesCache);
+    }
+    return this.http
+      .get<CountryOption[]>('https://date.nager.at/api/v3/AvailableCountries')
+      .pipe(
+        map((countries) => countries.sort((a, b) => a.name.localeCompare(b.name))),
+        tap((countries) => (this.countriesCache = countries)),
+      );
   }
 
   getPublicHolidays(year: number, countryCode: string) {

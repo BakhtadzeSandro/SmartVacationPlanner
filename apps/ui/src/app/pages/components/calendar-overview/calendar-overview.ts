@@ -85,11 +85,11 @@ export class CalendarOverview {
 
     if (ptoDates.has(dateStr)) return 'pto';
 
+    if (holidayDates.has(dateStr)) return 'public-holiday';
+
     const d = new Date(year, month, day);
     const dayOfWeek = d.getDay();
     if (dayOfWeek === 0 || dayOfWeek === 6) return 'weekend';
-
-    if (holidayDates.has(dateStr)) return 'public-holiday';
 
     return null;
   }
