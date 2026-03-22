@@ -3,7 +3,7 @@
 
   @if (loading()) {
     <div class="configuration-skeleton">
-      @for (_ of [1, 2, 3, 4, 5, 6]; track $index) {
+      @for (_ of [1, 2, 3, 4, 5, 6, 7, 8, 9]; track $index) {
         <div class="skeleton-field">
           <p-skeleton width="40%" height="14px" />
           <p-skeleton width="100%" height="40px" />
@@ -64,6 +64,7 @@
             [max]="50"
             [showButtons]="true"
             [allowEmpty]="false"
+            [inputStyle]="{ 'pointer-events': 'none' }"
             class="input-number"
           />
           @if (minimumLeaveDays() !== null) {
@@ -99,6 +100,7 @@
             [max]="configForm.controls.maxPtoDays.value"
             [showButtons]="true"
             [allowEmpty]="false"
+            [inputStyle]="{ 'pointer-events': 'none' }"
             class="input-number"
           />
         </div>
@@ -112,6 +114,7 @@
             [showButtons]="true"
             [min]="1"
             [allowEmpty]="false"
+            [inputStyle]="{ 'pointer-events': 'none' }"
             class="input-number"
           />
         </div>
