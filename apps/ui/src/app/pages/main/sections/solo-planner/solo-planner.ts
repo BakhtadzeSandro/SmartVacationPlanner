@@ -140,8 +140,6 @@ export class SoloPlanner {
     const map: Record<string, number[]> = {
       'all-year': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
       spring: [2, 3, 4], summer: [5, 6, 7], fall: [8, 9, 10], winter: [11, 0, 1],
-      January: [0], February: [1], March: [2], April: [3], May: [4], June: [5],
-      July: [6], August: [7], September: [8], October: [9], November: [10], December: [11],
     };
     return map[period] ?? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
   }

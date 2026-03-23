@@ -77,7 +77,9 @@
       "spring": "Spring (Mar-May)",
       "summer": "Summer (Jun-Aug)",
       "fall": "Fall (Sep-Nov)",
-      "winter": "Winter (Dec-Feb)",
+      "winter": "Winter (Dec-Feb)"
+    },
+    "Month": {
       "January": "January",
       "February": "February",
       "March": "March",
