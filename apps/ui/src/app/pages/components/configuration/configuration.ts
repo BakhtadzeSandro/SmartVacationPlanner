@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit, input, output, signal } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, OnInit, input, output, signal } from '@angular/core';
 import {
   FormsModule,
   ReactiveFormsModule,
@@ -13,15 +13,16 @@ import { InputNumber } from 'primeng/inputnumber';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { ButtonModule } from 'primeng/button';
 import { Skeleton } from 'primeng/skeleton';
+import { Accordion, AccordionPanel, AccordionHeader, AccordionContent } from 'primeng/accordion';
 import { ConfigurationService } from '../../../core/services/configuration.service';
+import { CountryStateService } from '../../../core/services/country-state.service';
 import {
   ConfigurationForm,
-  CountryOption,
   PublicHoliday,
   SelectOption,
   VacationSearchParams,
 } from './configuration.model';
-import { EMPTY, catchError, debounceTime, forkJoin, finalize, merge, switchMap, tap } from 'rxjs';
+import { EMPTY, catchError, debounceTime, forkJoin, finalize, merge, tap } from 'rxjs';
 
 const PERIOD_MONTHS: Record<string, number[]> = {
   'all-year': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
@@ -29,18 +30,6 @@ const PERIOD_MONTHS: Record<string, number[]> = {
   summer: [5, 6, 7],
   fall: [8, 9, 10],
   winter: [11, 0, 1],
-  January: [0],
-  February: [1],
-  March: [2],
-  April: [3],
-  May: [4],
-  June: [5],
-  July: [6],
-  August: [7],
-  September: [8],
-  October: [9],
-  November: [10],
-  December: [11],
 };
 
 @Component({
@@ -56,6 +45,10 @@ const PERIOD_MONTHS: Record<string, number[]> = {
     ToggleSwitch,
     ButtonModule,
     Skeleton,
+    Accordion,
+    AccordionPanel,
+    AccordionHeader,
+    AccordionContent,
   ],
 })
 export class Configuration implements OnInit {
@@ -63,17 +56,15 @@ export class Configuration implements OnInit {
   private readonly translate = inject(TranslateService);
   private readonly configurationService = inject(ConfigurationService);
   private readonly destroyRef = inject(DestroyRef);
+  readonly countryState = inject(CountryStateService);
 
   readonly configForm = this.buildForm();
   readonly hasSearched = input(false);
 
-  readonly countryName = signal<string>('');
-  readonly countryCode = signal<string>('');
   readonly minimumLeaveDays = signal<number | null>(null);
-  readonly loading = signal(true);
-  readonly error = signal(false);
   readonly holidaysLoading = signal(false);
-  readonly availableCountries = signal<CountryOption[]>([]);
+  readonly holidayError = signal(false);
+  readonly loading = computed(() => this.countryState.loading() || this.holidaysLoading());
 
   readonly yearChange = output<number>();
   readonly holidaysChange = output<PublicHoliday[]>();
@@ -92,19 +83,17 @@ export class Configuration implements OnInit {
     'summer',
     'fall',
     'winter',
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
   ];
+
+  constructor() {
+    effect(() => {
+      const code = this.countryState.countryCode();
+      const name = this.countryState.countryName();
+      if (code && name) {
+        this.loadCountryData(code, name);
+      }
+    });
+  }
 
   private loadPeriodFilters(): void {
     const selectedYear = this.configForm.controls.year.value;
@@ -136,7 +125,7 @@ export class Configuration implements OnInit {
   }
 
   changePtoValues(): void {
-    const { ptoDays, minPtoDays, maxPtoDays } = this.configForm.controls;
+    const { ptoDays, minPtoDays, maxPtoDays, minGapDays } = this.configForm.controls;
 
     const clamp = (val: number | null, min: number, max: number) =>
       Math.max(min, Math.min(max, val || min));
@@ -144,12 +133,13 @@ export class Configuration implements OnInit {
     ptoDays.setValue(clamp(ptoDays.value, 1, 50), { emitEvent: false });
     maxPtoDays.setValue(clamp(maxPtoDays.value, 1, ptoDays.value), { emitEvent: false });
     minPtoDays.setValue(clamp(minPtoDays.value, 1, maxPtoDays.value), { emitEvent: false });
+    minGapDays.setValue(clamp(minGapDays.value, 0, 90), { emitEvent: false });
   }
 
   onSubmit(): void {
     this.changePtoValues();
     if (this.configForm.invalid) return;
-    const { year, ptoDays, minPtoDays, maxPtoDays, periodFilter, enableMidWeekStarts } =
+    const { year, ptoDays, minPtoDays, maxPtoDays, periodFilter, enableMidWeekStarts, minGapDays } =
       this.configForm.getRawValue();
     this.searchChange.emit({
       year,
@@ -158,19 +148,14 @@ export class Configuration implements OnInit {
       maxPtoDays,
       periodFilter,
       enableMidWeekStarts,
+      minGapDays,
     });
-  }
-
-  onCountryChange(country: CountryOption): void {
-    if (!country) return;
-    this.countryCode.set(country.countryCode);
-    this.countryName.set(country.name);
-    this.loadCountryData(country.countryCode, country.name);
   }
 
   private loadCountryData(countryCode: string, countryName: string): void {
     const currentYear = this.configForm.controls.year.value;
     this.holidaysLoading.set(true);
+    this.holidayError.set(false);
 
     forkJoin({
       holidays: this.configurationService.getPublicHolidays(currentYear, countryCode),
@@ -186,71 +171,13 @@ export class Configuration implements OnInit {
           }
         }),
         catchError(() => {
-          this.error.set(true);
+          this.holidayError.set(true);
           return EMPTY;
         }),
         finalize(() => this.holidaysLoading.set(false)),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe();
-  }
-
-  private getCountryInformation(): void {
-    const currentYear = this.configForm.controls.year.value;
-    if (!currentYear) return;
-    this.loading.set(true);
-    this.error.set(false);
-
-    forkJoin({
-      countries: this.configurationService.getAvailableCountries(),
-      ipDetect: this.configurationService.getConfiguration().pipe(
-        catchError(() => {
-          // ipapi.co failed — return null so country list still loads
-          return [null];
-        }),
-      ),
-    })
-      .pipe(
-        switchMap(({ countries, ipDetect }) => {
-          this.availableCountries.set(countries);
-
-          if (ipDetect) {
-            this.countryName.set(ipDetect.country_name);
-            this.countryCode.set(ipDetect.country_code);
-          }
-
-          const code = ipDetect?.country_code;
-          if (!code) {
-            // No auto-detect — just show country dropdown, user picks manually
-            return EMPTY;
-          }
-
-          return forkJoin({
-            holidays: this.configurationService.getPublicHolidays(currentYear, code),
-            leave: this.configurationService.getMinimumLeave(ipDetect!.country_name),
-          }).pipe(
-            tap(({ holidays, leave }) => {
-              this.holidaysChange.emit(holidays);
-              this.minimumLeaveDays.set(leave.minimumLeaveDays);
-              if (leave.minimumLeaveDays !== null) {
-                this.configForm.controls.ptoDays.setValue(leave.minimumLeaveDays);
-                this.configForm.controls.maxPtoDays.setValue(leave.minimumLeaveDays);
-              }
-            }),
-          );
-        }),
-        catchError(() => {
-          this.error.set(true);
-          return EMPTY;
-        }),
-        finalize(() => this.loading.set(false)),
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe();
-  }
-
-  retry(): void {
-    this.getCountryInformation();
   }
 
   private buildForm(): FormGroup<ConfigurationForm> {
@@ -262,6 +189,7 @@ export class Configuration implements OnInit {
       maxPtoDays: fb.control<number>(10, [Validators.required, Validators.min(1)]),
       periodFilter: fb.control<string>('all-year'),
       enableMidWeekStarts: fb.control<boolean>(false),
+      minGapDays: fb.control<number>(0, [Validators.required, Validators.min(0), Validators.max(90)]),
     });
   }
 
@@ -306,7 +234,7 @@ export class Configuration implements OnInit {
   }
 
   private listenToAutoSearch(): void {
-    const { minPtoDays, maxPtoDays, ptoDays, periodFilter, enableMidWeekStarts } =
+    const { minPtoDays, maxPtoDays, ptoDays, periodFilter, enableMidWeekStarts, minGapDays } =
       this.configForm.controls;
 
     merge(
@@ -315,6 +243,7 @@ export class Configuration implements OnInit {
       ptoDays.valueChanges,
       periodFilter.valueChanges,
       enableMidWeekStarts.valueChanges,
+      minGapDays.valueChanges,
     )
       .pipe(debounceTime(400), takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
@@ -325,14 +254,14 @@ export class Configuration implements OnInit {
   }
 
   private refreshHolidays(year: number): void {
-    const code = this.countryCode();
+    const code = this.countryState.countryCode();
     if (!code) return;
     this.holidaysLoading.set(true);
     this.configurationService
       .getPublicHolidays(year, code)
       .pipe(
         catchError(() => {
-          this.error.set(true);
+          this.holidayError.set(true);
           return EMPTY;
         }),
         finalize(() => this.holidaysLoading.set(false)),
@@ -344,7 +273,6 @@ export class Configuration implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getCountryInformation();
     this.loadPeriodFilters();
     this.listenToYearChanges();
     this.listenToPtoChanges();

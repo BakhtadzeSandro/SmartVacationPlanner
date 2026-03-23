@@ -41,30 +41,6 @@ function getMonthsForPeriod(periodFilter: string): number[] | null {
       return [8, 9, 10];
     case 'winter':
       return [11, 0, 1];
-    case 'January':
-      return [0];
-    case 'February':
-      return [1];
-    case 'March':
-      return [2];
-    case 'April':
-      return [3];
-    case 'May':
-      return [4];
-    case 'June':
-      return [5];
-    case 'July':
-      return [6];
-    case 'August':
-      return [7];
-    case 'September':
-      return [8];
-    case 'October':
-      return [9];
-    case 'November':
-      return [10];
-    case 'December':
-      return [11];
     default:
       return null;
   }
@@ -222,20 +198,33 @@ export function doOptionsOverlap(a: VacationOption, b: VacationOption): boolean 
   return a.startDate <= b.endDate && b.startDate <= a.endDate;
 }
 
+export function areOptionsCompatible(a: VacationOption, b: VacationOption, minGapDays: number): boolean {
+  if (doOptionsOverlap(a, b)) return false;
+  if (minGapDays <= 0) return true;
+
+  const earlier = a.endDate < b.endDate ? a : b;
+  const later = a.endDate < b.endDate ? b : a;
+  const endMs = new Date(earlier.endDate + 'T00:00:00').getTime();
+  const startMs = new Date(later.startDate + 'T00:00:00').getTime();
+  const daysBetween = Math.round((startMs - endMs) / (1000 * 60 * 60 * 24));
+  return daysBetween >= minGapDays;
+}
+
 export function findOptimalCombination(
   bridges: VacationOption[],
   ptoBudget: number,
+  minGapDays: number = 0,
 ): VacationOption[] {
   if (bridges.length === 0 || ptoBudget <= 0) return [];
 
   const n = bridges.length;
   const sorted = [...bridges].sort((a, b) => a.endDate.localeCompare(b.endDate));
 
-  // For each bridge i, find the latest non-overlapping predecessor
+  // For each bridge i, find the latest compatible predecessor
   const compat = new Array<number>(n).fill(-1);
   for (let i = 0; i < n; i++) {
     for (let j = i - 1; j >= 0; j--) {
-      if (!doOptionsOverlap(sorted[j], sorted[i])) {
+      if (areOptionsCompatible(sorted[j], sorted[i], minGapDays)) {
         compat[i] = j;
         break;
       }

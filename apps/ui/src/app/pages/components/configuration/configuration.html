@@ -3,59 +3,21 @@
 
   @if (loading()) {
     <div class="configuration-skeleton">
-      @for (_ of [1, 2, 3, 4, 5, 6, 7, 8, 9]; track $index) {
+      @for (_ of [1, 2, 3, 4, 5, 6, 7, 8]; track $index) {
         <div class="skeleton-field">
           <p-skeleton width="40%" height="14px" />
           <p-skeleton width="100%" height="40px" />
         </div>
       }
     </div>
-  } @else if (error() && availableCountries().length === 0) {
+  } @else if (countryState.error() && countryState.availableCountries().length === 0) {
     <div class="configuration-error">
       <i class="pi pi-exclamation-circle error-icon"></i>
       <p class="error-message">{{ 'SoloPlanner.Error.LoadFailed' | translate }}</p>
-      <button
-        type="button"
-        pButton
-        [label]="'SoloPlanner.Error.Retry' | translate"
-        icon="pi pi-refresh"
-        (click)="retry()"
-        severity="primary"
-      ></button>
     </div>
   } @else {
     <div class="configuration-form">
       <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
-        <div class="form-field">
-          <label class="form-label">{{ 'SoloPlanner.Country' | translate }}</label>
-          <div class="country-select-wrapper">
-            @if (countryCode()) {
-              <img
-                class="country-flag"
-                [src]="'https://flagcdn.com/24x18/' + countryCode().toLowerCase() + '.png'"
-                [alt]="countryName()"
-                width="24"
-                height="18"
-              />
-            }
-            <p-select
-              [options]="availableCountries()"
-              optionLabel="name"
-              [filter]="true"
-              filterBy="name"
-              [placeholder]="'SoloPlanner.SelectCountry' | translate"
-              [ngModel]="{ countryCode: countryCode(), name: countryName() }"
-              [ngModelOptions]="{ standalone: true }"
-              (onChange)="onCountryChange($event.value)"
-              [dataKey]="'countryCode'"
-              class="country-select"
-            />
-          </div>
-          @if (countryCode()) {
-            <span class="form-hint">{{ 'SoloPlanner.CountryChangeHint' | translate }}</span>
-          }
-        </div>
-
         <div class="form-field">
           <label class="form-label">{{ 'SoloPlanner.AvailablePtoDays' | translate }}</label>
           <p-inputnumber
@@ -71,12 +33,12 @@
             <span class="form-hint">
               {{
                 'SoloPlanner.MinimumLeaveHint'
-                  | translate: { country: countryName(), days: minimumLeaveDays() }
+                  | translate: { country: countryState.countryName(), days: minimumLeaveDays() }
               }}
             </span>
-          } @else if (countryName()) {
+          } @else if (countryState.countryName()) {
             <span class="form-hint form-hint-warn">
-              {{ 'SoloPlanner.MinimumLeaveUnavailable' | translate: { country: countryName() } }}
+              {{ 'SoloPlanner.MinimumLeaveUnavailable' | translate: { country: countryState.countryName() } }}
             </span>
           }
         </div>
@@ -118,24 +80,47 @@
           />
         </div>
 
-        <div class="form-field">
-          <label class="form-label">{{ 'SoloPlanner.EnableMidWeekStarts' | translate }}</label>
-          <p-toggleswitch formControlName="enableMidWeekStarts" />
-        </div>
+        <p-accordion class="advanced-filters-accordion">
+          <p-accordion-panel value="advanced">
+            <p-accordion-header>{{ 'SoloPlanner.AdvancedFilters' | translate }}</p-accordion-header>
+            <p-accordion-content>
+              <div class="advanced-filters-content">
+                <div class="form-field">
+                  <label class="form-label">{{ 'SoloPlanner.PeriodFilter' | translate }}</label>
+                  <p-select
+                    formControlName="periodFilter"
+                    [options]="periodFilters"
+                    optionLabel="label"
+                    optionValue="value"
+                    optionDisabled="disabled"
+                    [filter]="true"
+                    filterBy="label"
+                    class="w-full"
+                  />
+                </div>
 
-        <div class="form-field">
-          <label class="form-label">{{ 'SoloPlanner.PeriodFilter' | translate }}</label>
-          <p-select
-            formControlName="periodFilter"
-            [options]="periodFilters"
-            optionLabel="label"
-            optionValue="value"
-            optionDisabled="disabled"
-            [filter]="true"
-            filterBy="label"
-            class="w-full"
-          />
-        </div>
+                <div class="form-field">
+                  <label class="form-label">{{ 'SoloPlanner.EnableMidWeekStarts' | translate }}</label>
+                  <p-toggleswitch formControlName="enableMidWeekStarts" />
+                </div>
+
+                <div class="form-field">
+                  <label class="form-label">{{ 'SoloPlanner.MinGapDays' | translate }}</label>
+                  <p-inputnumber
+                    formControlName="minGapDays"
+                    [min]="0"
+                    [max]="90"
+                    [showButtons]="true"
+                    [allowEmpty]="false"
+                    (onBlur)="changePtoValues()"
+                    class="input-number"
+                  />
+                  <span class="form-hint">{{ 'SoloPlanner.MinGapDaysHint' | translate }}</span>
+                </div>
+              </div>
+            </p-accordion-content>
+          </p-accordion-panel>
+        </p-accordion>
 
         @if (!hasSearched()) {
           <button

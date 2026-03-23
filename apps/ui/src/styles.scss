@@ -181,3 +181,21 @@ small {
   font-size: $font-size-sm;
   line-height: $line-height-normal;
 }
+
+.p-select-list-container {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--border-primary);
+    border-radius: 3px;
+  }
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-primary) transparent;
+}

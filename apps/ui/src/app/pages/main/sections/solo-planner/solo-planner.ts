@@ -5,6 +5,7 @@ import { CalendarOverview } from '../../../components/calendar-overview/calendar
 import { VacationResults } from '../../../components/vacation-results/vacation-results';
 import { PublicHoliday, VacationSearchParams } from '../../../components/configuration/configuration.model';
 import {
+  areOptionsCompatible,
   doOptionsOverlap,
   findOptimalCombination,
   findOptimalVacations,
@@ -112,8 +113,9 @@ export class SoloPlanner {
       return;
     }
 
-    const overlaps = current.some(o => doOptionsOverlap(o, option));
-    if (overlaps) return;
+    const minGapDays = this.lastSearchParams?.minGapDays ?? 0;
+    const incompatible = current.some(o => !areOptionsCompatible(o, option, minGapDays));
+    if (incompatible) return;
 
     if (this.totalPtoUsed() + option.ptoDaysUsed > this.ptoBudget()) return;
 
@@ -121,7 +123,8 @@ export class SoloPlanner {
   }
 
   onAutoOptimize(): void {
-    const optimal = findOptimalCombination(this.vacationResults(), this.ptoBudget());
+    const minGapDays = this.lastSearchParams?.minGapDays ?? 0;
+    const optimal = findOptimalCombination(this.vacationResults(), this.ptoBudget(), minGapDays);
     this.selectedOptions.set(optimal);
   }
 
@@ -137,8 +140,6 @@ export class SoloPlanner {
     const map: Record<string, number[]> = {
       'all-year': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
       spring: [2, 3, 4], summer: [5, 6, 7], fall: [8, 9, 10], winter: [11, 0, 1],
-      January: [0], February: [1], March: [2], April: [3], May: [4], June: [5],
-      July: [6], August: [7], September: [8], October: [9], November: [10], December: [11],
     };
     return map[period] ?? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
   }

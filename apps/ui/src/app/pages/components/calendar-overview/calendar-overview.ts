@@ -170,7 +170,7 @@ export class CalendarOverview {
       'November',
       'December',
     ];
-    const nameKey = `SoloPlanner.Period.${monthNames[month]}`;
+    const nameKey = `SoloPlanner.Month.${monthNames[month]}`;
 
     return { nameKey, year, month, weeks };
   }

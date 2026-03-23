@@ -25,6 +25,7 @@ export interface ConfigurationForm {
   maxPtoDays: FormControl<number>;
   periodFilter: FormControl<string>;
   enableMidWeekStarts: FormControl<boolean>;
+  minGapDays: FormControl<number>;
 }
 
 export interface CountryOption {
@@ -39,4 +40,5 @@ export interface VacationSearchParams {
   maxPtoDays: number;
   periodFilter: string;
   enableMidWeekStarts: boolean;
+  minGapDays: number;
 }
