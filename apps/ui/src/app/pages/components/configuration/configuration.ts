@@ -1,5 +1,11 @@
 import { Component, DestroyRef, inject, OnInit, input, output, signal } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Select } from 'primeng/select';
@@ -41,7 +47,16 @@ const PERIOD_MONTHS: Record<string, number[]> = {
   selector: 'app-configuration',
   templateUrl: './configuration.html',
   styleUrl: './configuration.scss',
-  imports: [FormsModule, ReactiveFormsModule, TranslateModule, Select, InputNumber, ToggleSwitch, ButtonModule, Skeleton],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    TranslateModule,
+    Select,
+    InputNumber,
+    ToggleSwitch,
+    ButtonModule,
+    Skeleton,
+  ],
 })
 export class Configuration implements OnInit {
   private readonly fb = inject(FormBuilder);
@@ -120,7 +135,19 @@ export class Configuration implements OnInit {
       });
   }
 
+  changePtoValues(): void {
+    const { ptoDays, minPtoDays, maxPtoDays } = this.configForm.controls;
+
+    const clamp = (val: number | null, min: number, max: number) =>
+      Math.max(min, Math.min(max, val || min));
+
+    ptoDays.setValue(clamp(ptoDays.value, 1, 50), { emitEvent: false });
+    maxPtoDays.setValue(clamp(maxPtoDays.value, 1, ptoDays.value), { emitEvent: false });
+    minPtoDays.setValue(clamp(minPtoDays.value, 1, maxPtoDays.value), { emitEvent: false });
+  }
+
   onSubmit(): void {
+    this.changePtoValues();
     if (this.configForm.invalid) return;
     const { year, ptoDays, minPtoDays, maxPtoDays, periodFilter, enableMidWeekStarts } =
       this.configForm.getRawValue();
@@ -253,32 +280,29 @@ export class Configuration implements OnInit {
   private listenToPtoChanges(): void {
     const { ptoDays, maxPtoDays, minPtoDays } = this.configForm.controls;
 
-    ptoDays.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((pto) => {
-        if (maxPtoDays.value > pto) {
-          maxPtoDays.setValue(pto);
-        }
-        if (minPtoDays.value > maxPtoDays.value) {
-          minPtoDays.setValue(maxPtoDays.value);
-        }
-      });
+    ptoDays.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((pto) => {
+      if (pto < 1) return;
+      if (maxPtoDays.value > pto) {
+        maxPtoDays.setValue(pto);
+      }
+      if (minPtoDays.value > maxPtoDays.value) {
+        minPtoDays.setValue(maxPtoDays.value);
+      }
+    });
 
-    maxPtoDays.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((maxPto) => {
-        if (minPtoDays.value > maxPto) {
-          minPtoDays.setValue(maxPto);
-        }
-      });
+    maxPtoDays.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((maxPto) => {
+      if (maxPto < 1) return;
+      if (minPtoDays.value > maxPto) {
+        minPtoDays.setValue(maxPto);
+      }
+    });
 
-    minPtoDays.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((minPto) => {
-        if (maxPtoDays.value < minPto) {
-          maxPtoDays.setValue(minPto);
-        }
-      });
+    minPtoDays.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((minPto) => {
+      if (minPto < 1) return;
+      if (maxPtoDays.value < minPto) {
+        maxPtoDays.setValue(minPto);
+      }
+    });
   }
 
   private listenToAutoSearch(): void {

@@ -64,7 +64,7 @@
             [max]="50"
             [showButtons]="true"
             [allowEmpty]="false"
-            [inputStyle]="{ 'pointer-events': 'none' }"
+            (onBlur)="changePtoValues()"
             class="input-number"
           />
           @if (minimumLeaveDays() !== null) {
@@ -100,7 +100,7 @@
             [max]="configForm.controls.maxPtoDays.value"
             [showButtons]="true"
             [allowEmpty]="false"
-            [inputStyle]="{ 'pointer-events': 'none' }"
+            (onBlur)="changePtoValues()"
             class="input-number"
           />
         </div>
@@ -112,9 +112,8 @@
             [min]="configForm.controls.minPtoDays.value"
             [max]="configForm.controls.ptoDays.value"
             [showButtons]="true"
-            [min]="1"
             [allowEmpty]="false"
-            [inputStyle]="{ 'pointer-events': 'none' }"
+            (onBlur)="changePtoValues()"
             class="input-number"
           />
         </div>
