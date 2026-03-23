@@ -13,6 +13,7 @@ import { InputNumber } from 'primeng/inputnumber';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { ButtonModule } from 'primeng/button';
 import { Skeleton } from 'primeng/skeleton';
+import { Accordion, AccordionPanel, AccordionHeader, AccordionContent } from 'primeng/accordion';
 import { ConfigurationService } from '../../../core/services/configuration.service';
 import {
   ConfigurationForm,
@@ -56,6 +57,10 @@ const PERIOD_MONTHS: Record<string, number[]> = {
     ToggleSwitch,
     ButtonModule,
     Skeleton,
+    Accordion,
+    AccordionPanel,
+    AccordionHeader,
+    AccordionContent,
   ],
 })
 export class Configuration implements OnInit {
@@ -136,7 +141,7 @@ export class Configuration implements OnInit {
   }
 
   changePtoValues(): void {
-    const { ptoDays, minPtoDays, maxPtoDays } = this.configForm.controls;
+    const { ptoDays, minPtoDays, maxPtoDays, minGapDays } = this.configForm.controls;
 
     const clamp = (val: number | null, min: number, max: number) =>
       Math.max(min, Math.min(max, val || min));
@@ -144,12 +149,13 @@ export class Configuration implements OnInit {
     ptoDays.setValue(clamp(ptoDays.value, 1, 50), { emitEvent: false });
     maxPtoDays.setValue(clamp(maxPtoDays.value, 1, ptoDays.value), { emitEvent: false });
     minPtoDays.setValue(clamp(minPtoDays.value, 1, maxPtoDays.value), { emitEvent: false });
+    minGapDays.setValue(clamp(minGapDays.value, 0, 90), { emitEvent: false });
   }
 
   onSubmit(): void {
     this.changePtoValues();
     if (this.configForm.invalid) return;
-    const { year, ptoDays, minPtoDays, maxPtoDays, periodFilter, enableMidWeekStarts } =
+    const { year, ptoDays, minPtoDays, maxPtoDays, periodFilter, enableMidWeekStarts, minGapDays } =
       this.configForm.getRawValue();
     this.searchChange.emit({
       year,
@@ -158,6 +164,7 @@ export class Configuration implements OnInit {
       maxPtoDays,
       periodFilter,
       enableMidWeekStarts,
+      minGapDays,
     });
   }
 
@@ -262,6 +269,7 @@ export class Configuration implements OnInit {
       maxPtoDays: fb.control<number>(10, [Validators.required, Validators.min(1)]),
       periodFilter: fb.control<string>('all-year'),
       enableMidWeekStarts: fb.control<boolean>(false),
+      minGapDays: fb.control<number>(0, [Validators.required, Validators.min(0), Validators.max(90)]),
     });
   }
 
@@ -306,7 +314,7 @@ export class Configuration implements OnInit {
   }
 
   private listenToAutoSearch(): void {
-    const { minPtoDays, maxPtoDays, ptoDays, periodFilter, enableMidWeekStarts } =
+    const { minPtoDays, maxPtoDays, ptoDays, periodFilter, enableMidWeekStarts, minGapDays } =
       this.configForm.controls;
 
     merge(
@@ -315,6 +323,7 @@ export class Configuration implements OnInit {
       ptoDays.valueChanges,
       periodFilter.valueChanges,
       enableMidWeekStarts.valueChanges,
+      minGapDays.valueChanges,
     )
       .pipe(debounceTime(400), takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {

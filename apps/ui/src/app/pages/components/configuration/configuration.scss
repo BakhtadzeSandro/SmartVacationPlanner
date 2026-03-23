@@ -64,8 +64,52 @@
   min-width: 0;
 }
 
+.advanced-filters-accordion {
+  margin-bottom: 20px;
+
+  ::ng-deep {
+    .p-accordion {
+      border: none;
+    }
+
+    .p-accordionpanel {
+      border: none;
+    }
+
+    .p-accordionheader {
+      padding: 8px 12px;
+      background: none;
+      border: none;
+      border-radius: 6px;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+      color: var(--text-secondary);
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-bottom: 4px;
+
+      &:hover {
+        color: var(--text-primary);
+        background: var(--surface-hover, rgba(255, 255, 255, 0.05));
+      }
+    }
+
+    .p-accordioncontent-content {
+      padding: 12px 0 0;
+      background: none;
+      border: none;
+    }
+  }
+}
+
+.advanced-filters-content {
+  padding-top: 4px;
+}
+
 .submit-button {
   width: 100%;
+  margin-top: 20px;
 }
 
 .configuration-skeleton {

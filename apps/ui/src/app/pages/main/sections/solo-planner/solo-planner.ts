@@ -5,6 +5,7 @@ import { CalendarOverview } from '../../../components/calendar-overview/calendar
 import { VacationResults } from '../../../components/vacation-results/vacation-results';
 import { PublicHoliday, VacationSearchParams } from '../../../components/configuration/configuration.model';
 import {
+  areOptionsCompatible,
   doOptionsOverlap,
   findOptimalCombination,
   findOptimalVacations,
@@ -112,8 +113,9 @@ export class SoloPlanner {
       return;
     }
 
-    const overlaps = current.some(o => doOptionsOverlap(o, option));
-    if (overlaps) return;
+    const minGapDays = this.lastSearchParams?.minGapDays ?? 0;
+    const incompatible = current.some(o => !areOptionsCompatible(o, option, minGapDays));
+    if (incompatible) return;
 
     if (this.totalPtoUsed() + option.ptoDaysUsed > this.ptoBudget()) return;
 
@@ -121,7 +123,8 @@ export class SoloPlanner {
   }
 
   onAutoOptimize(): void {
-    const optimal = findOptimalCombination(this.vacationResults(), this.ptoBudget());
+    const minGapDays = this.lastSearchParams?.minGapDays ?? 0;
+    const optimal = findOptimalCombination(this.vacationResults(), this.ptoBudget(), minGapDays);
     this.selectedOptions.set(optimal);
   }
 

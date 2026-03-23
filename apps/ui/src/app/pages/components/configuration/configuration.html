@@ -118,24 +118,47 @@
           />
         </div>
 
-        <div class="form-field">
-          <label class="form-label">{{ 'SoloPlanner.EnableMidWeekStarts' | translate }}</label>
-          <p-toggleswitch formControlName="enableMidWeekStarts" />
-        </div>
+        <p-accordion class="advanced-filters-accordion">
+          <p-accordion-panel value="advanced">
+            <p-accordion-header>{{ 'SoloPlanner.AdvancedFilters' | translate }}</p-accordion-header>
+            <p-accordion-content>
+              <div class="advanced-filters-content">
+                <div class="form-field">
+                  <label class="form-label">{{ 'SoloPlanner.PeriodFilter' | translate }}</label>
+                  <p-select
+                    formControlName="periodFilter"
+                    [options]="periodFilters"
+                    optionLabel="label"
+                    optionValue="value"
+                    optionDisabled="disabled"
+                    [filter]="true"
+                    filterBy="label"
+                    class="w-full"
+                  />
+                </div>
 
-        <div class="form-field">
-          <label class="form-label">{{ 'SoloPlanner.PeriodFilter' | translate }}</label>
-          <p-select
-            formControlName="periodFilter"
-            [options]="periodFilters"
-            optionLabel="label"
-            optionValue="value"
-            optionDisabled="disabled"
-            [filter]="true"
-            filterBy="label"
-            class="w-full"
-          />
-        </div>
+                <div class="form-field">
+                  <label class="form-label">{{ 'SoloPlanner.EnableMidWeekStarts' | translate }}</label>
+                  <p-toggleswitch formControlName="enableMidWeekStarts" />
+                </div>
+
+                <div class="form-field">
+                  <label class="form-label">{{ 'SoloPlanner.MinGapDays' | translate }}</label>
+                  <p-inputnumber
+                    formControlName="minGapDays"
+                    [min]="0"
+                    [max]="90"
+                    [showButtons]="true"
+                    [allowEmpty]="false"
+                    (onBlur)="changePtoValues()"
+                    class="input-number"
+                  />
+                  <span class="form-hint">{{ 'SoloPlanner.MinGapDaysHint' | translate }}</span>
+                </div>
+              </div>
+            </p-accordion-content>
+          </p-accordion-panel>
+        </p-accordion>
 
         @if (!hasSearched()) {
           <button
