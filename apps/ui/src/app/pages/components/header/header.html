@@ -4,6 +4,49 @@
       <div class="header-title">{{ 'Header.Title' | translate }}</div>
       <div class="header-subtitle">{{ 'Header.Subtitle' | translate }}</div>
     </div>
+    <div class="header-center">
+      @if (countryState.loading()) {
+        <p-skeleton width="200px" height="40px" />
+      } @else if (countryState.error() && countryState.availableCountries().length === 0) {
+        <div class="country-error">
+          <span class="country-error-text">{{ 'SoloPlanner.Error.LoadFailed' | translate }}</span>
+          <button
+            type="button"
+            pButton
+            [label]="'SoloPlanner.Error.Retry' | translate"
+            icon="pi pi-refresh"
+            (click)="retryCountryLoad()"
+            severity="secondary"
+            [text]="true"
+            size="small"
+          ></button>
+        </div>
+      } @else {
+        <div class="country-select-wrapper">
+          @if (countryState.countryCode()) {
+            <img
+              class="country-flag"
+              [src]="'https://flagcdn.com/24x18/' + countryState.countryCode().toLowerCase() + '.png'"
+              [alt]="countryState.countryName()"
+              width="24"
+              height="18"
+            />
+          }
+          <p-select
+            [options]="countryState.availableCountries()"
+            optionLabel="name"
+            [filter]="true"
+            filterBy="name"
+            [placeholder]="'SoloPlanner.SelectCountry' | translate"
+            [ngModel]="selectedCountryObject()"
+            [ngModelOptions]="{ standalone: true }"
+            (onChange)="onCountryChange($event.value)"
+            [dataKey]="'countryCode'"
+            class="country-select"
+          />
+        </div>
+      }
+    </div>
     <div class="header-right">
       <button
         class="header-btn theme-btn"
