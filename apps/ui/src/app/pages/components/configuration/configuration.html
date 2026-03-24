@@ -2,7 +2,6 @@
   <div class="configuration-header">
     <h4 class="configuration-title">{{ 'SoloPlanner.Configuration' | translate }}</h4>
     <p class="configuration-subtitle">
-      <i class="pi pi-info-circle"></i>
       {{ 'SoloPlanner.PtoExplainer' | translate }}
     </p>
   </div>
@@ -44,7 +43,10 @@
             </span>
           } @else if (countryState.countryName()) {
             <span class="form-hint form-hint-warn">
-              {{ 'SoloPlanner.MinimumLeaveUnavailable' | translate: { country: countryState.countryName() } }}
+              {{
+                'SoloPlanner.MinimumLeaveUnavailable'
+                  | translate: { country: countryState.countryName() }
+              }}
             </span>
           }
         </div>
@@ -106,7 +108,9 @@
                 </div>
 
                 <div class="form-field">
-                  <label class="form-label">{{ 'SoloPlanner.EnableMidWeekStarts' | translate }}</label>
+                  <label class="form-label">{{
+                    'SoloPlanner.EnableMidWeekStarts' | translate
+                  }}</label>
                   <p-toggleswitch formControlName="enableMidWeekStarts" />
                 </div>
 
