@@ -5,9 +5,6 @@
   flex-direction: column;
   gap: 16px;
   padding: 24px;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-primary);
-  border-radius: 8px;
 
   @media (max-width: 576px) {
     padding: 16px;
