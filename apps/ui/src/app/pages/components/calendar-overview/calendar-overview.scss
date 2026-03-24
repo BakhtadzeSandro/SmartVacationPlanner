@@ -132,6 +132,11 @@
     background-color: var(--bg-weekend);
     color: var(--text-weekend);
     border-radius: 12px;
+    font-weight: $font-weight-semibold;
+    width: 28px;
+    height: 28px;
+    margin: 0 auto;
+    padding: 0;
   }
 
   &.public-holiday {

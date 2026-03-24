@@ -1,57 +1,57 @@
 @use 'variables' as *;
 
 :root {
-  // Backgrounds
-  --bg-page: #f5f5f5;
+  // Backgrounds – Slate light
+  --bg-page: #f8fafc;
   --bg-card: #ffffff;
-  --bg-card-alt: #fdfbfb;
+  --bg-card-alt: #ffffff;
   --bg-input: #ffffff;
-  --bg-header-btn: #f9fafb;
-  --bg-header-btn-hover: #f3f4f6;
-  --bg-header-btn-active: #e5e7eb;
+  --bg-header-btn: #f8fafc;
+  --bg-header-btn-hover: #f1f5f9;
+  --bg-header-btn-active: #e2e8f0;
   --bg-badge: #fef3c7;
   --bg-tip: #eff6ff;
-  --bg-weekend: #f3f4f6;
+  --bg-weekend: #f1f5f9;
 
-  // Borders
-  --border-primary: #e5e7eb;
-  --border-btn: #e5e7eb;
-  --border-btn-hover: #d1d5db;
-  --border-tip: #bedbff;
+  // Borders – Slate light
+  --border-primary: #e2e8f0;
+  --border-btn: #e2e8f0;
+  --border-btn-hover: #cbd5e1;
+  --border-tip: #bfdbfe;
   --border-tip-left: #3b82f6;
 
-  // Text
-  --text-primary: #1d293d;
-  --text-secondary: #6b7280;
-  --text-body: #374151;
-  --text-muted: #9ca3af;
+  // Text – Slate light
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --text-body: #334155;
+  --text-muted: #94a3b8;
   --text-badge: #f59e0b;
-  --text-tip: #193cb8;
+  --text-tip: #1e40af;
   --text-tip-strong: #3b82f6;
   --text-hint: #3b82f6;
-  --text-legend: #374151;
-  --text-weekend: #9ca3af;
+  --text-legend: #334155;
+  --text-weekend: #94a3b8;
 
   // Divider
-  --divider: #e5e7eb;
+  --divider: #e2e8f0;
 
   // Error
   --text-error: #dc2626;
 
   // Weekend legend dot
-  --bg-legend-weekend: #d1d5db;
+  --bg-legend-weekend: #cbd5e1;
 
   // Semantic colors
   --color-primary: #3b82f6;
   --color-primary-hover: #2563eb;
   --color-on-primary: #ffffff;
-  --color-success: #10b981;
-  --color-success-hover: #059669;
+  --color-success: #22c55e;
+  --color-success-hover: #16a34a;
   --color-danger: #ef4444;
   --bg-efficiency-badge: #dbeafe;
   --text-efficiency-badge: #2563eb;
-  --bg-holiday-tag: rgba(16, 185, 129, 0.1);
-  --text-holiday-tag: #10b981;
+  --bg-holiday-tag: rgba(34, 197, 94, 0.1);
+  --text-holiday-tag: #16a34a;
   --bg-pto-cell: #dbeafe;
   --text-pto-cell: #2563eb;
   --shadow-selected: rgba(59, 130, 246, 0.15);
@@ -59,9 +59,10 @@
 }
 
 :root.dark {
-  --bg-page: #0f172a;
-  --bg-card: #1e293b;
-  --bg-card-alt: #1e293b;
+  // Backgrounds – Slate dark
+  --bg-page: #020617;
+  --bg-card: #0f172a;
+  --bg-card-alt: #0f172a;
   --bg-input: #0f172a;
   --bg-header-btn: #1e293b;
   --bg-header-btn-hover: #334155;
@@ -70,13 +71,15 @@
   --bg-tip: #1e3a5f;
   --bg-weekend: #1e293b;
 
-  --border-primary: #334155;
-  --border-btn: #334155;
-  --border-btn-hover: #475569;
+  // Borders – Slate dark
+  --border-primary: #1e293b;
+  --border-btn: #1e293b;
+  --border-btn-hover: #334155;
   --border-tip: #1e40af;
   --border-tip-left: #3b82f6;
 
-  --text-primary: #f1f5f9;
+  // Text – Slate dark
+  --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --text-body: #cbd5e1;
   --text-muted: #64748b;
@@ -87,9 +90,10 @@
   --text-legend: #cbd5e1;
   --text-weekend: #64748b;
 
-  --divider: #334155;
+  // Divider
+  --divider: #1e293b;
 
-  --bg-legend-weekend: #475569;
+  --bg-legend-weekend: #334155;
 
   --text-error: #f87171;
 
@@ -97,13 +101,13 @@
   --color-primary: #3b82f6;
   --color-primary-hover: #60a5fa;
   --color-on-primary: #ffffff;
-  --color-success: #10b981;
-  --color-success-hover: #34d399;
+  --color-success: #16a34a;
+  --color-success-hover: #22c55e;
   --color-danger: #f87171;
   --bg-efficiency-badge: rgba(59, 130, 246, 0.15);
   --text-efficiency-badge: #93c5fd;
-  --bg-holiday-tag: rgba(16, 185, 129, 0.15);
-  --text-holiday-tag: #34d399;
+  --bg-holiday-tag: rgba(34, 197, 94, 0.15);
+  --text-holiday-tag: #4ade80;
   --bg-pto-cell: rgba(59, 130, 246, 0.2);
   --text-pto-cell: #93c5fd;
   --shadow-selected: rgba(59, 130, 246, 0.25);
