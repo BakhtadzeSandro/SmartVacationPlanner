@@ -61,19 +61,6 @@
         </div>
 
         <div class="form-field">
-          <label class="form-label">{{ 'SoloPlanner.MinPtoDays' | translate }}</label>
-          <p-inputnumber
-            formControlName="minPtoDays"
-            [min]="1"
-            [max]="configForm.controls.maxPtoDays.value"
-            [showButtons]="true"
-            [allowEmpty]="false"
-            (onBlur)="changePtoValues()"
-            class="input-number"
-          />
-        </div>
-
-        <div class="form-field">
           <label class="form-label">{{ 'SoloPlanner.MaxPtoDays' | translate }}</label>
           <p-inputnumber
             formControlName="maxPtoDays"
@@ -91,6 +78,19 @@
             <p-accordion-header>{{ 'SoloPlanner.AdvancedFilters' | translate }}</p-accordion-header>
             <p-accordion-content>
               <div class="advanced-filters-content">
+                <div class="form-field">
+                  <label class="form-label">{{ 'SoloPlanner.MinPtoDays' | translate }}</label>
+                  <p-inputnumber
+                    formControlName="minPtoDays"
+                    [min]="1"
+                    [max]="configForm.controls.maxPtoDays.value"
+                    [showButtons]="true"
+                    [allowEmpty]="false"
+                    (onBlur)="changePtoValues()"
+                    class="input-number"
+                  />
+                </div>
+
                 <div class="form-field">
                   <label class="form-label">{{ 'SoloPlanner.PeriodFilter' | translate }}</label>
                   <p-select
