@@ -1,5 +1,10 @@
 <div class="configuration-container">
-  <h4 class="configuration-title">{{ 'SoloPlanner.Configuration' | translate }}</h4>
+  <div class="configuration-header">
+    <h4 class="configuration-title">{{ 'SoloPlanner.Configuration' | translate }}</h4>
+    <p class="configuration-subtitle">
+      {{ 'SoloPlanner.PtoExplainer' | translate }}
+    </p>
+  </div>
 
   @if (loading()) {
     <div class="configuration-skeleton">
@@ -25,7 +30,7 @@
             [min]="1"
             [max]="50"
             [showButtons]="true"
-            [allowEmpty]="false"
+            [allowEmpty]="true"
             (onBlur)="changePtoValues()"
             class="input-number"
           />
@@ -38,7 +43,10 @@
             </span>
           } @else if (countryState.countryName()) {
             <span class="form-hint form-hint-warn">
-              {{ 'SoloPlanner.MinimumLeaveUnavailable' | translate: { country: countryState.countryName() } }}
+              {{
+                'SoloPlanner.MinimumLeaveUnavailable'
+                  | translate: { country: countryState.countryName() }
+              }}
             </span>
           }
         </div>
@@ -55,26 +63,13 @@
         </div>
 
         <div class="form-field">
-          <label class="form-label">{{ 'SoloPlanner.MinPtoDays' | translate }}</label>
-          <p-inputnumber
-            formControlName="minPtoDays"
-            [min]="1"
-            [max]="configForm.controls.maxPtoDays.value"
-            [showButtons]="true"
-            [allowEmpty]="false"
-            (onBlur)="changePtoValues()"
-            class="input-number"
-          />
-        </div>
-
-        <div class="form-field">
           <label class="form-label">{{ 'SoloPlanner.MaxPtoDays' | translate }}</label>
           <p-inputnumber
             formControlName="maxPtoDays"
             [min]="configForm.controls.minPtoDays.value"
             [max]="configForm.controls.ptoDays.value"
             [showButtons]="true"
-            [allowEmpty]="false"
+            [allowEmpty]="true"
             (onBlur)="changePtoValues()"
             class="input-number"
           />
@@ -85,6 +80,19 @@
             <p-accordion-header>{{ 'SoloPlanner.AdvancedFilters' | translate }}</p-accordion-header>
             <p-accordion-content>
               <div class="advanced-filters-content">
+                <div class="form-field">
+                  <label class="form-label">{{ 'SoloPlanner.MinPtoDays' | translate }}</label>
+                  <p-inputnumber
+                    formControlName="minPtoDays"
+                    [min]="1"
+                    [max]="configForm.controls.maxPtoDays.value"
+                    [showButtons]="true"
+                    [allowEmpty]="true"
+                    (onBlur)="changePtoValues()"
+                    class="input-number"
+                  />
+                </div>
+
                 <div class="form-field">
                   <label class="form-label">{{ 'SoloPlanner.PeriodFilter' | translate }}</label>
                   <p-select
@@ -100,7 +108,9 @@
                 </div>
 
                 <div class="form-field">
-                  <label class="form-label">{{ 'SoloPlanner.EnableMidWeekStarts' | translate }}</label>
+                  <label class="form-label">{{
+                    'SoloPlanner.EnableMidWeekStarts' | translate
+                  }}</label>
                   <p-toggleswitch formControlName="enableMidWeekStarts" />
                 </div>
 
@@ -111,7 +121,7 @@
                     [min]="0"
                     [max]="90"
                     [showButtons]="true"
-                    [allowEmpty]="false"
+                    [allowEmpty]="true"
                     (onBlur)="changePtoValues()"
                     class="input-number"
                   />

@@ -33,6 +33,43 @@ export interface CountryOption {
   name: string;
 }
 
+export interface SubdivisionOption {
+  code: string;
+  name: string;
+}
+
+export interface OpenHolidayName {
+  language: string;
+  text: string;
+}
+
+export interface OpenHolidaySubdivision {
+  code: string;
+  shortName: string;
+}
+
+export interface OpenHolidayResponse {
+  id: string;
+  startDate: string;
+  endDate: string;
+  type: string;
+  name: OpenHolidayName[];
+  regionalScope: string;
+  temporalScope: string;
+  nationwide: boolean;
+  subdivisions?: OpenHolidaySubdivision[];
+}
+
+export interface OpenSubdivisionResponse {
+  code: string;
+  isoCode: string;
+  shortName: string;
+  name: OpenHolidayName[];
+  category: OpenHolidayName[];
+  officialLanguages: string[];
+  children?: OpenSubdivisionResponse[];
+}
+
 export interface VacationSearchParams {
   year: number;
   ptoDays: number;

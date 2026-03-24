@@ -30,7 +30,7 @@
 .sidebar {
   background-color: var(--bg-card);
   border: 1px solid var(--border-primary);
-  border-radius: 12px;
+  border-radius: 8px;
 }
 
 .tip-container {
@@ -56,9 +56,29 @@
   min-width: 0;
   background-color: var(--bg-card);
   border: 1px solid var(--border-primary);
-  border-radius: 12px;
+  border-radius: 8px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--border-primary);
+    border-radius: 3px;
+  }
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-primary) transparent;
 
   @media (max-width: 992px) {
     width: 100%;
+    max-height: none;
+    overflow-y: visible;
   }
 }

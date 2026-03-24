@@ -19,6 +19,8 @@ export interface CalendarMonth {
   year: number;
   month: number;
   weeks: CalendarDay[][];
+  isCurrentMonth: boolean;
+  isPastMonth: boolean;
 }
 
 @Component({
@@ -172,6 +174,11 @@ export class CalendarOverview {
     ];
     const nameKey = `SoloPlanner.Month.${monthNames[month]}`;
 
-    return { nameKey, year, month, weeks };
+    const now = new Date();
+    const isCurrentMonth = year === now.getFullYear() && month === now.getMonth();
+    const isPastMonth =
+      year < now.getFullYear() || (year === now.getFullYear() && month < now.getMonth());
+
+    return { nameKey, year, month, weeks, isCurrentMonth, isPastMonth };
   }
 }

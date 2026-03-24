@@ -7,6 +7,7 @@
 }
 
 .header-top {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -36,12 +37,7 @@
   }
 }
 
-.header-center {
-  display: flex;
-  align-items: center;
-}
-
-.country-select-wrapper {
+.country-option {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -52,7 +48,11 @@
 }
 
 .country-select {
-  min-width: 240px;
+  min-width: 220px;
+}
+
+.subdivision-select {
+  min-width: 180px;
 }
 
 .country-error {
@@ -69,7 +69,7 @@
 .header-right {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
 .header-tabs {
@@ -97,7 +97,7 @@
   align-items: center;
   justify-content: center;
   border: 1px solid var(--border-btn);
-  border-radius: 10px;
+  border-radius: 8px;
   background: var(--bg-header-btn);
   color: var(--text-body);
   cursor: pointer;
@@ -125,21 +125,54 @@
   height: 40px;
 }
 
+@media (max-width: 768px) {
+  .header-top {
+    flex-wrap: wrap;
+  }
+
+  .header-right {
+    order: 2;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .country-select,
+  .subdivision-select {
+    min-width: 0;
+    flex: 1;
+  }
+}
+
 @media (max-width: 576px) {
   .header-top {
     flex-wrap: wrap;
   }
 
-  .header-center {
-    order: 3;
-    width: 100%;
-    flex-direction: row;
-    align-items: center;
-    gap: 8px;
+  .header-left {
+    flex: 1;
+
+    .header-subtitle {
+      width: 80%;
+    }
   }
 
-  .country-select {
+  .header-right {
+    order: 2;
+    width: 100%;
+    gap: 8px;
+    flex-direction: column;
+  }
+
+  .country-select,
+  .subdivision-select {
     min-width: 0;
-    flex: 1;
+    width: 100%;
+  }
+
+  .theme-btn {
+    order: -1;
+    position: absolute;
+    top: 16px;
+    right: 24px;
   }
 }

@@ -7,7 +7,7 @@ import { Skeleton } from 'primeng/skeleton';
 import { ButtonModule } from 'primeng/button';
 import { ThemeService } from '../../../core/services/theme.service';
 import { CountryStateService } from '../../../core/services/country-state.service';
-import { CountryOption } from '../configuration/configuration.model';
+import { CountryOption, SubdivisionOption } from '../configuration/configuration.model';
 import { Router } from '@angular/router';
 
 @Component({
@@ -26,6 +26,12 @@ export class Header implements OnInit {
     const code = this.countryState.countryCode();
     const name = this.countryState.countryName();
     return code ? { countryCode: code, name } : null;
+  });
+
+  readonly selectedSubdivisionObject = computed<SubdivisionOption | null>(() => {
+    const code = this.countryState.subdivisionCode();
+    const name = this.countryState.subdivisionName();
+    return code ? { code, name } : null;
   });
 
   readonly tabs = [
@@ -54,6 +60,10 @@ export class Header implements OnInit {
   onCountryChange(country: CountryOption): void {
     if (!country) return;
     this.countryState.selectCountry(country);
+  }
+
+  onSubdivisionChange(subdivision: SubdivisionOption | null): void {
+    this.countryState.selectSubdivision(subdivision);
   }
 
   retryCountryLoad(): void {

@@ -27,7 +27,11 @@
 
   <div class="calendar-overview-content">
     @for (month of calendarMonths(); track month.month) {
-      <div class="calendar-month-card">
+      <div
+        class="calendar-month-card"
+        [class.current-month]="month.isCurrentMonth"
+        [class.past-month]="month.isPastMonth"
+      >
         <div class="calendar-month-header">{{ month.nameKey | translate }}</div>
         <div class="calendar-day-grid">
           @for (key of dayHeaderKeys; track $index) {
