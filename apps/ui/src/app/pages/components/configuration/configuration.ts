@@ -89,9 +89,12 @@ export class Configuration implements OnInit {
     effect(() => {
       const code = this.countryState.countryCode();
       const name = this.countryState.countryName();
-      if (code && name) {
-        this.loadCountryData(code, name);
-      }
+      const subdivisionsLoading = this.countryState.subdivisionsLoading();
+      if (!code || !name || subdivisionsLoading) return;
+
+      const subdivisionCode = this.countryState.subdivisionCode();
+      const hasSubdivisions = this.countryState.subdivisions().length > 0;
+      this.loadCountryData(code, name, hasSubdivisions ? subdivisionCode : undefined);
     });
   }
 
@@ -152,13 +155,21 @@ export class Configuration implements OnInit {
     });
   }
 
-  private loadCountryData(countryCode: string, countryName: string): void {
+  private loadCountryData(
+    countryCode: string,
+    countryName: string,
+    subdivisionCode?: string,
+  ): void {
     const currentYear = this.configForm.controls.year.value;
     this.holidaysLoading.set(true);
     this.holidayError.set(false);
 
+    const holidays$ = subdivisionCode !== undefined
+      ? this.configurationService.getOpenHolidays(currentYear, countryCode, subdivisionCode || undefined)
+      : this.configurationService.getPublicHolidays(currentYear, countryCode);
+
     forkJoin({
-      holidays: this.configurationService.getPublicHolidays(currentYear, countryCode),
+      holidays: holidays$,
       leave: this.configurationService.getMinimumLeave(countryName),
     })
       .pipe(
@@ -256,9 +267,16 @@ export class Configuration implements OnInit {
   private refreshHolidays(year: number): void {
     const code = this.countryState.countryCode();
     if (!code) return;
+
+    const hasSubdivisions = this.countryState.subdivisions().length > 0;
+    const subdivisionCode = this.countryState.subdivisionCode();
+
+    const holidays$ = hasSubdivisions
+      ? this.configurationService.getOpenHolidays(year, code, subdivisionCode || undefined)
+      : this.configurationService.getPublicHolidays(year, code);
+
     this.holidaysLoading.set(true);
-    this.configurationService
-      .getPublicHolidays(year, code)
+    holidays$
       .pipe(
         catchError(() => {
           this.holidayError.set(true);

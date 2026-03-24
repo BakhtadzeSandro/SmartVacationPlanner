@@ -22,6 +22,21 @@
           ></button>
         </div>
       } @else {
+        @if (countryState.subdivisionsLoading()) {
+          <p-skeleton width="160px" height="40px" />
+        } @else if (countryState.subdivisions().length > 0) {
+          <p-select
+            [options]="countryState.subdivisions()"
+            optionLabel="name"
+            [filter]="true"
+            filterBy="name"
+            [ngModel]="selectedSubdivisionObject()"
+            [ngModelOptions]="{ standalone: true }"
+            (onChange)="onSubdivisionChange($event.value)"
+            [dataKey]="'code'"
+            class="subdivision-select"
+          />
+        }
         <p-select
           [options]="countryState.availableCountries()"
           optionLabel="name"
@@ -38,7 +53,9 @@
             <div class="country-option">
               <img
                 class="country-flag"
-                [src]="'https://flagcdn.com/24x18/' + selectedOption.countryCode.toLowerCase() + '.png'"
+                [src]="
+                  'https://flagcdn.com/24x18/' + selectedOption.countryCode.toLowerCase() + '.png'
+                "
                 [alt]="selectedOption.name"
                 width="24"
                 height="18"

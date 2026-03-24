@@ -50,6 +50,10 @@
   min-width: 220px;
 }
 
+.subdivision-select {
+  min-width: 180px;
+}
+
 .country-error {
   display: flex;
   align-items: center;
@@ -131,7 +135,8 @@
     width: 100%;
   }
 
-  .country-select {
+  .country-select,
+  .subdivision-select {
     min-width: 0;
     flex: 1;
   }
@@ -150,9 +155,11 @@
     order: 2;
     width: 100%;
     gap: 8px;
+    flex-wrap: wrap;
   }
 
-  .country-select {
+  .country-select,
+  .subdivision-select {
     min-width: 0;
     flex: 1;
   }
