@@ -92,6 +92,16 @@
   border-radius: 8px;
   padding: 12px;
   background-color: var(--bg-card-alt);
+  transition: opacity 0.2s ease;
+
+  &.current-month {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 1px var(--color-primary);
+  }
+
+  &.past-month {
+    opacity: 0.45;
+  }
 }
 
 .calendar-month-header {

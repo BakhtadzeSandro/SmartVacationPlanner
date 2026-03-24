@@ -167,7 +167,7 @@ export class Configuration implements OnInit {
           this.minimumLeaveDays.set(leave.minimumLeaveDays);
           if (leave.minimumLeaveDays !== null) {
             this.configForm.controls.ptoDays.setValue(leave.minimumLeaveDays);
-            this.configForm.controls.maxPtoDays.setValue(leave.minimumLeaveDays);
+            this.configForm.controls.maxPtoDays.setValue(Math.min(leave.minimumLeaveDays, 10));
           }
         }),
         catchError(() => {
