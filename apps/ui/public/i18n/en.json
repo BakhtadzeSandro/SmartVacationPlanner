@@ -9,6 +9,7 @@
   },
   "SoloPlanner": {
     "Configuration": "Configuration",
+    "PtoExplainer": "PTO = Paid Time Off — vacation days from your employer.",
     "Country": "Country",
     "Year": "Year",
     "AvailablePtoDays": "Available PTO Days",

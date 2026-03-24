@@ -1,5 +1,11 @@
 <div class="configuration-container">
-  <h4 class="configuration-title">{{ 'SoloPlanner.Configuration' | translate }}</h4>
+  <div class="configuration-header">
+    <h4 class="configuration-title">{{ 'SoloPlanner.Configuration' | translate }}</h4>
+    <p class="configuration-subtitle">
+      <i class="pi pi-info-circle"></i>
+      {{ 'SoloPlanner.PtoExplainer' | translate }}
+    </p>
+  </div>
 
   @if (loading()) {
     <div class="configuration-skeleton">

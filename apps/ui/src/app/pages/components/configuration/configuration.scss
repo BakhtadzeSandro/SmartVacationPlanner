@@ -10,11 +10,30 @@
   }
 }
 
-.configuration-title {
-  color: var(--text-primary);
+.configuration-header {
   padding-bottom: 16px;
   border-bottom: 1px solid var(--border-primary);
   margin-bottom: 24px;
+}
+
+.configuration-title {
+  color: var(--text-primary);
+}
+
+.configuration-subtitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: $font-size-sm;
+  color: var(--text-hint);
+  background-color: var(--bg-tip);
+  padding: 4px 10px;
+  border-radius: 6px;
+  margin-top: 8px;
+
+  .pi {
+    font-size: $font-size-xs;
+  }
 }
 
 .configuration-form {
