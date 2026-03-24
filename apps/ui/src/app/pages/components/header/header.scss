@@ -36,12 +36,7 @@
   }
 }
 
-.header-center {
-  display: flex;
-  align-items: center;
-}
-
-.country-select-wrapper {
+.country-option {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -52,7 +47,7 @@
 }
 
 .country-select {
-  min-width: 240px;
+  min-width: 220px;
 }
 
 .country-error {
@@ -69,7 +64,7 @@
 .header-right {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
 .header-tabs {
@@ -125,16 +120,35 @@
   height: 40px;
 }
 
+@media (max-width: 768px) {
+  .header-top {
+    flex-wrap: wrap;
+  }
+
+  .header-right {
+    order: 2;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .country-select {
+    min-width: 0;
+    flex: 1;
+  }
+}
+
 @media (max-width: 576px) {
   .header-top {
     flex-wrap: wrap;
   }
 
-  .header-center {
-    order: 3;
+  .header-left {
     width: 100%;
-    flex-direction: row;
-    align-items: center;
+  }
+
+  .header-right {
+    order: 2;
+    width: 100%;
     gap: 8px;
   }
 
