@@ -1,0 +1,18 @@
+{
+  "name": "Vacation Optimizer — Extend Your Holidays",
+  "short_name": "Vacation Optimizer",
+  "description": "Maximize your time off by connecting public holidays and weekends into longer breaks with minimal PTO usage.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["productivity", "lifestyle", "utilities"]
+}
